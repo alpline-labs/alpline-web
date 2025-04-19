@@ -56,13 +56,13 @@ export const siteConfig = {
     },
     {
       name: "Performance Tracking",
-      description: 
+      description:
         "Track detailed stats on speed, vertical, run times, and fitness metrics.",
       icon: <ActivityIcon className="h-6 w-6" />,
     },
     {
       name: "Group Features",
-      description: 
+      description:
         "Share locations, plan meetups, and navigate together with friends.",
       icon: <UsersIcon className="h-6 w-6" />,
     },
@@ -193,9 +193,9 @@ export const siteConfig = {
       question: "How does CarVNav work without internet connection?",
       answer: (
         <span>
-          CarVNav downloads all mapping data to your phone so the app works offline. 
-          This gives you full routing and navigation functionality even when you don't have 
-          a data connection on the mountain. Your activity data will sync once you're connected again.
+          CarVNav downloads all mapping data to your phone so the app works offline.
+          This gives you full routing and navigation functionality even when you don&apos;t have
+          a data connection on the mountain. Your activity data will sync once you&apos;re connected again.
         </span>
       ),
     },
@@ -203,8 +203,8 @@ export const siteConfig = {
       question: "How many resorts are supported?",
       answer: (
         <span>
-          CarVNav currently supports over 2,000 resorts worldwide across North America, the European Alps, 
-          Japan, Australia, and New Zealand. We're constantly adding new resorts to our database.
+          CarVNav currently supports over 2,000 resorts worldwide across North America, the European Alps,
+          Japan, Australia, and New Zealand. We&apos;re constantly adding new resorts to our database.
         </span>
       ),
     },
@@ -213,7 +213,7 @@ export const siteConfig = {
       answer: (
         <span>
           Our Group Ski feature lets you share your location or set a meet-up point and guides everyone there.
-          You can see all your friends on the interactive map and coordinate in real-time. Location sharing is 
+          You can see all your friends on the interactive map and coordinate in real-time. Location sharing is
           privacy-focused, so you can turn it on or off at any time.
         </span>
       ),
@@ -234,7 +234,7 @@ export const siteConfig = {
         <span>
           Absolutely! CarVNav has a built-in community platform where you can connect with fellow winter
           sports enthusiasts, discover and join local events, plan group outings, and expand your
-          mountain network. It's the perfect way to find your riding crew!
+          mountain network. It&apos;s the perfect way to find your riding crew!
         </span>
       ),
     },
