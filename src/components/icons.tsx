@@ -14,10 +14,10 @@ export const Icons = {
       strokeLinejoin="round"
       {...props}
     >
-      <path d="M8 2v4"></path>
-      <path d="M16 2v4"></path>
-      <rect width="18" height="18" x="3" y="4" rx="2"></rect>
-      <path d="M3 10h18"></path>
+      <path d="M3 20L8 10L12 14L17 8L21 20"></path>
+      <path d="M7 12L8 10L9 12"></path>
+      <path d="M11 16L12 14L13 16"></path>
+      <path d="M16 10L17 8L18 10"></path>
     </svg>
   ),
   twitter: (props: IconProps) => (

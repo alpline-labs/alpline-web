@@ -16,7 +16,7 @@ import {
 export const BLUR_FADE_DELAY = 0.15;
 
 export const siteConfig = {
-  name: "CarVNav",
+  name: "App",
   description: "The ultimate all-in-one winter sports navigation & community app.",
   cta: "Download Now",
   url: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
@@ -29,11 +29,11 @@ export const siteConfig = {
     "Snow Community",
   ],
   links: {
-    email: "support@carvnav.com",
-    twitter: "https://twitter.com/carvnav",
-    discord: "https://discord.gg/carvnav",
-    github: "https://github.com/carvnav",
-    instagram: "https://instagram.com/carvnav",
+    email: "support@App.com",
+    twitter: "https://twitter.com/App",
+    discord: "https://discord.gg/App",
+    github: "https://github.com/App",
+    instagram: "https://instagram.com/App",
   },
   features: [
     {
@@ -190,10 +190,10 @@ export const siteConfig = {
   ],
   faqs: [
     {
-      question: "How does CarVNav work without internet connection?",
+      question: "How does App work without internet connection?",
       answer: (
         <span>
-          CarVNav downloads all mapping data to your phone so the app works offline.
+          App downloads all mapping data to your phone so the app works offline.
           This gives you full routing and navigation functionality even when you don&apos;t have
           a data connection on the mountain. Your activity data will sync once you&apos;re connected again.
         </span>
@@ -203,7 +203,7 @@ export const siteConfig = {
       question: "How many resorts are supported?",
       answer: (
         <span>
-          CarVNav currently supports over 2,000 resorts worldwide across North America, the European Alps,
+          App currently supports over 2,000 resorts worldwide across North America, the European Alps,
           Japan, Australia, and New Zealand. We&apos;re constantly adding new resorts to our database.
         </span>
       ),
@@ -219,10 +219,10 @@ export const siteConfig = {
       ),
     },
     {
-      question: "What kind of performance stats does CarVNav track?",
+      question: "What kind of performance stats does App track?",
       answer: (
         <span>
-          CarVNav tracks a comprehensive set of performance metrics including speed, vertical, distance,
+          App tracks a comprehensive set of performance metrics including speed, vertical, distance,
           run count, heart rate (with connected devices), calories burned, and even identifies your best
           runs. You can analyze your data by day, trip, or season.
         </span>
@@ -232,7 +232,7 @@ export const siteConfig = {
       question: "Can I connect with other skiers and snowboarders?",
       answer: (
         <span>
-          Absolutely! CarVNav has a built-in community platform where you can connect with fellow winter
+          Absolutely! App has a built-in community platform where you can connect with fellow winter
           sports enthusiasts, discover and join local events, plan group outings, and expand your
           mountain network. It&apos;s the perfect way to find your riding crew!
         </span>
@@ -278,7 +278,7 @@ export const siteConfig = {
     },
     {
       id: 4,
-      text: "I met my entire riding crew through CarVNav's community features. Game changer!",
+      text: "I met my entire riding crew through App's community features. Game changer!",
       name: "Diana Evans",
       role: "Social Skier",
       image:
@@ -310,107 +310,11 @@ export const siteConfig = {
     },
     {
       id: 8,
-      text: "The offline functionality is essential when you're in the mountains with spotty service. CarVNav never lets me down.",
+      text: "The offline functionality is essential when you're in the mountains with spotty service. App never lets me down.",
       name: "Hannah Irving",
       role: "Backcountry Enthusiast",
       image:
           "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTJ8fHBvcnRyYWl0fGVufDB8fDB8fHww",
-    },
-    {
-      id: 9,
-      text: "Finding local events through the app has completely transformed my ski trips. I never ski alone anymore!",
-      name: "Ian Johnson",
-      role: "Solo Traveler",
-      image:
-          "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTZ8fHBvcnRyYWl0fGVufDB8fDB8fHww",
-    },
-    {
-      id: 10,
-      text: "The season leaderboards have turned my friends group into a competitive ski team. So much fun!",
-      name: "Julia Kim",
-      role: "Competitive Skier",
-      image:
-          "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NjR8fHBvcnRyYWl0fGVufDB8fDB8fHww",
-    },
-    {
-      id: 11,
-      text: "Dynamic re-routing saved our day when unexpected trail closures would have ruined our plans.",
-      name: "Kevin Lee",
-      role: "Family Ski Planner",
-      image:
-          "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Njh8fHBvcnRyYWl0fGVufDB8fDB8fHww",
-    },
-    {
-      id: 12,
-      text: "The facility locator helped me find the nearest ski patrol when my friend got injured. A literal lifesaver!",
-      name: "Laura Martinez",
-      role: "Safety-Conscious Rider",
-      image:
-          "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NzJ8fHBvcnRyYWl0fGVufDB8fDB8fHww",
-    },
-    {
-      id: 13,
-      text: "Being able to replay my runs in 3D has helped me visualize and improve my technique tremendously.",
-      name: "Michael Nelson",
-      role: "Technique-Focused Rider",
-      image:
-          "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NzZ8fHBvcnRyYWl0fGVufDB8fDB8fHww",
-    },
-    {
-      id: 14,
-      text: "I'm planning all our group ski trips this year through CarVNav. The integrated tools make it so easy!",
-      name: "Natalie Owens",
-      role: "Trip Organizer",
-      image:
-          "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8ODB8fHBvcnRyYWl0fGVufDB8fDB8fHww",
-    },
-    {
-      id: 15,
-      text: "The ability to customize routes based on skill level has been perfect for teaching my kids to ski.",
-      name: "Oscar Parker",
-      role: "Skiing Parent",
-      image:
-          "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8ODR8fHBvcnRyYWl0fGVufDB8fDB8fHww",
-    },
-    {
-      id: 16,
-      text: "I've tried all the ski apps, and CarVNav combines the best features from all of them in one seamless package.",
-      name: "Patricia Quinn",
-      role: "Tech-Savvy Rider",
-      image:
-          "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8ODh8fHBvcnRyYWl0fGVufDB8fDB8fHww",
-    },
-    {
-      id: 17,
-      text: "The event calendar has connected me with local riders at every resort I've visited this season.",
-      name: "Quincy Roberts",
-      role: "Traveling Snowboarder",
-      image:
-          "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OTJ8fHBvcnRyYWl0fGVufDB8fDB8fHww",
-    },
-    {
-      id: 18,
-      text: "The audio navigation feels like having a local guide with you on every mountain.",
-      name: "Rachel Stevens",
-      role: "International Skier",
-      image:
-          "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OTZ8fHBvcnRyYWl0fGVufDB8fDB8fHww",
-    },
-    {
-      id: 19,
-      text: "I've logged every ski day this season with CarVNav, and the seasonal stats overview is incredibly motivating.",
-      name: "Samuel Thompson",
-      role: "Data-Driven Skier",
-      image:
-          "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTAwfHxwb3J0cmFpdHxlbnwwfHwwfHx8MA%3D%3D",
-    },
-    {
-      id: 20,
-      text: "The 'meet in the middle' feature is genius for coordinating with friends spread across the mountain.",
-      name: "Tina Upton",
-      role: "Social Rider",
-      image:
-          "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTA0fHxwb3J0cmFpdHxlbnwwfHwwfHx8MA%3D%3D",
     },
   ],
 };

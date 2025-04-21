@@ -45,6 +45,14 @@ export function Header() {
     visible: { opacity: 1, y: 0 },
   };
 
+  const handleNavClick = (sectionId: string) => (e: React.MouseEvent) => {
+    e.preventDefault();
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <AnimatePresence>
       {isVisible && (
@@ -63,12 +71,58 @@ export function Header() {
           <div className="flex justify-between items-center container mx-auto p-2">
             <Link
               href="/"
-              title="CarVNav"
+              title="App"
               className="relative mr-6 flex items-center space-x-2"
             >
               <Icons.logo className="w-auto" />
               <span className="font-bold text-xl tracking-tight">{siteConfig.name}</span>
             </Link>
+            {/* Navigation Links */}
+            <nav className="hidden lg:flex items-center space-x-6">
+              <Link
+                href="#featureScroll"
+                onClick={handleNavClick("featureScroll")}
+                className="text-sm font-medium hover:text-primary transition-colors"
+              >
+                EXPERIENCE
+              </Link>
+              <Link
+                href="#features"
+                onClick={handleNavClick("features")}
+                className="text-sm font-medium hover:text-primary transition-colors"
+              >
+                FEATURES
+              </Link>
+              <Link
+                href="#benefits"
+                onClick={handleNavClick("benefits")}
+                className="text-sm font-medium hover:text-primary transition-colors"
+              >
+                BENEFITS
+              </Link>
+              <Link
+                href="#testimonials"
+                onClick={handleNavClick("testimonials")}
+                className="text-sm font-medium hover:text-primary transition-colors"
+              >
+                TESTIMONIALS
+              </Link>
+              <Link
+                href="#pricing"
+                onClick={handleNavClick("pricing")}
+                className="text-sm font-medium hover:text-primary transition-colors"
+              >
+                PRICING
+              </Link>
+              <Link
+                href="#faq"
+                onClick={handleNavClick("faq")}
+                className="text-sm font-medium hover:text-primary transition-colors"
+              >
+                FAQ
+              </Link>
+            </nav>
+
             <div className="hidden lg:block">
               <Link
                 href="#"
