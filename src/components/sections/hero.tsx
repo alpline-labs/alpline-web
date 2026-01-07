@@ -4,7 +4,11 @@ import { Icons } from "@/components/icons";
 import { Section } from "@/components/section";
 import { easeInOutCubic } from "@/lib/animation";
 import { siteConfig } from "@/lib/config";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
 import { motion, useScroll, useTransform } from "framer-motion";
+import Link from "next/link";
+import { Navigation } from "lucide-react";
 
 export function Hero() {
   const { scrollY } = useScroll({
@@ -63,33 +67,25 @@ export function Hero() {
             Perfect for quick note-taking, content creation, and capturing ideas
             on-the-go.
           </motion.p>
-          <div className="flex justify-center mb-16">
-            <motion.img
-              src="/download-black.svg"
-              alt="Download"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1, delay: 1 }}
-              className="w-40 flex-shrink-0 dark:hidden block"
-            />
-            <motion.img
-              src="/download-white.svg"
-              alt="Download"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1, delay: 1 }}
-              className="w-40 flex-shrink-0 hidden dark:block"
-            />
-            <motion.img
-              src="/download-android-black.svg"
-              alt="Download"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1, delay: 1 }}
-              className="w-40 flex-shrink-0 dark:hidden block"
-            />
-          </div>
         </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1.2 }}
+          className="flex justify-center mb-16"
+        >
+          <Link
+            href="/map"
+            className={cn(
+              buttonVariants({ size: "lg" }),
+              "rounded-full px-8 text-lg font-bold shadow-xl shadow-primary/20 hover:scale-105 transition-transform"
+            )}
+          >
+            <Navigation className="mr-2 h-5 w-5" />
+            View Interactive Map
+          </Link>
+        </motion.div>
         <div className="flex flex-nowrap items-center justify-center gap-4 sm:gap-8 h-auto sm:h-[500px] select-none">
           <motion.img
             src="/Device-1.png" //Snow groups
