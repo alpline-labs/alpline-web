@@ -99,6 +99,8 @@ export default function MapPage() {
                     onClearRoute={handleClearRoute}
                     onRouteSelect={setActiveRouteIndex}
                     onResortChange={handleResortChange}
+                    onOriginChange={setOrigin}
+                    onDestinationChange={setDestination}
                     activeRouteIndex={activeRouteIndex}
                     loading={loading}
                 />

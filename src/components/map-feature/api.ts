@@ -16,7 +16,14 @@ export class ApiClient {
         });
 
         if (!response.ok) {
-            throw new Error(`Route calculation failed: ${response.statusText}`);
+            let errorMsg = response.statusText;
+            try {
+                const data = await response.json();
+                if (data.error) errorMsg = data.error;
+            } catch {
+                // ignore
+            }
+            throw new Error(`Route calculation failed: ${errorMsg}`);
         }
 
         return response.json();

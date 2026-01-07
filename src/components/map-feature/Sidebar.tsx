@@ -21,6 +21,8 @@ interface SidebarProps {
     onClearRoute: () => void;
     onRouteSelect: (index: number) => void;
     onResortChange: (resortId: string) => void;
+    onOriginChange: (location: Location | null) => void;
+    onDestinationChange: (location: Location | null) => void;
     activeRouteIndex: number;
     loading?: boolean;
 }
@@ -34,6 +36,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
     onClearRoute,
     onRouteSelect,
     onResortChange,
+    onOriginChange,
+    onDestinationChange,
     activeRouteIndex,
     loading
 }) => {
@@ -43,6 +47,64 @@ export const Sidebar: React.FC<SidebarProps> = ({
     const [showAlternatives, setShowAlternatives] = useState(false);
     const [isOptionsOpen, setIsOptionsOpen] = useState(false);
 
+    // Local state for inputs to allow typing
+    const [originText, setOriginText] = useState('');
+    const [destText, setDestText] = useState('');
+
+    const formatLocation = (loc: Location | null) => {
+        if (!loc) return '';
+        return `${loc.lat.toFixed(5)}, ${loc.lon.toFixed(5)}`;
+    };
+
+    // Sync local state when props change (e.g. from map click)
+    React.useEffect(() => {
+        if (origin) {
+            setOriginText(formatLocation(origin));
+        } else if (origin === null) {
+            // Only clear if explicitly null (cleared), ideally we might want to keep text if user typed invalid
+            // But for now, sync with source of truth
+            setOriginText('');
+        }
+    }, [origin]);
+
+    React.useEffect(() => {
+        if (destination) {
+            setDestText(formatLocation(destination));
+        } else if (destination === null) {
+            setDestText('');
+        }
+    }, [destination]);
+
+    const parseLocation = (str: string): Location | null => {
+        const parts = str.split(',').map(s => s.trim());
+        if (parts.length === 2) {
+            const lat = parseFloat(parts[0]);
+            const lon = parseFloat(parts[1]);
+            if (!isNaN(lat) && !isNaN(lon)) {
+                return { lat, lon };
+            }
+        }
+        return null;
+    };
+
+    const handleOriginInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const val = e.target.value;
+        setOriginText(val);
+        const loc = parseLocation(val);
+        if (loc) {
+            onOriginChange(loc);
+        }
+    };
+
+    const handleDestInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const val = e.target.value;
+        setDestText(val);
+        const loc = parseLocation(val);
+        if (loc) {
+            onDestinationChange(loc);
+        }
+    };
+
     const handleCalculate = () => {
         onCalculateRoute({
             skillLevel,
@@ -50,11 +112,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
             avoidMoguls,
             showAlternatives
         });
-    };
-
-    const formatLocation = (loc: Location | null) => {
-        if (!loc) return '';
-        return `${loc.lat.toFixed(5)}, ${loc.lon.toFixed(5)}`;
     };
 
     return (
@@ -93,9 +150,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
                         </div>
                         <input
                             type="text"
-                            value={formatLocation(origin)}
-                            placeholder="Click map for origin"
-                            readOnly
+                            value={originText}
+                            onChange={handleOriginInput}
+                            placeholder="Click map or type (lat, lon)"
                             className="w-full bg-gray-50 border border-gray-100 rounded-xl pl-10 pr-4 py-3 text-sm focus:outline-none ring-offset-2 focus:ring-2 focus:ring-primary/20 transition-all truncate"
                         />
                     </div>
@@ -107,14 +164,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
                         </div>
                         <input
                             type="text"
-                            value={formatLocation(destination)}
-                            placeholder="Click map for destination"
-                            readOnly
+                            value={destText}
+                            onChange={handleDestInput}
+                            placeholder="Click map or type (lat, lon)"
                             className="w-full bg-gray-50 border border-gray-100 rounded-xl pl-10 pr-4 py-3 text-sm focus:outline-none ring-offset-2 focus:ring-2 focus:ring-primary/20 transition-all truncate"
                         />
                         {(origin || destination) && (
                             <button
-                                onClick={onClearRoute}
+                                onClick={() => {
+                                    onClearRoute();
+                                    setOriginText('');
+                                    setDestText('');
+                                }}
                                 className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-gray-200 rounded-full transition-colors"
                             >
                                 <X className="w-4 h-4 text-gray-400" />
@@ -146,8 +207,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
                                             key={level.value}
                                             onClick={() => setSkillLevel(level.value)}
                                             className={`p-2 rounded-lg border-2 text-center transition-all ${skillLevel === level.value
-                                                    ? 'border-primary bg-primary/5 shadow-sm scale-105'
-                                                    : 'border-transparent bg-gray-50 hover:bg-gray-100'
+                                                ? 'border-primary bg-primary/5 shadow-sm scale-105'
+                                                : 'border-transparent bg-gray-50 hover:bg-gray-100'
                                                 }`}
                                             title={level.label}
                                         >

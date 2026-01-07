@@ -1,5 +1,5 @@
 export const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || 'pk.eyJ1IjoiYWxpZW5wZW5ndWluIiwiYSI6ImNtanNtdTBtejQ3azEzZXF6NDN2aDR1eTcifQ.WxUkk7QMpoUn9Y4YMEXk2Q';
-export const API_BASE_URL = 'http://localhost:3001';
+export const API_BASE_URL = '';
 
 export const RESORTS = {
     zermatt: {

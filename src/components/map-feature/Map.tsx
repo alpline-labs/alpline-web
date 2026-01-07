@@ -28,6 +28,12 @@ export const Map: React.FC<MapProps> = ({
     const originMarker = useRef<mapboxgl.Marker | null>(null);
     const destMarker = useRef<mapboxgl.Marker | null>(null);
 
+    const onMapClickRef = useRef(onMapClick);
+
+    useEffect(() => {
+        onMapClickRef.current = onMapClick;
+    }, [onMapClick]);
+
     // Initialize map
     useEffect(() => {
         if (!mapContainer.current || map.current) return;
@@ -88,7 +94,7 @@ export const Map: React.FC<MapProps> = ({
 
         // Click handler
         const handleClick = (e: mapboxgl.MapMouseEvent) => {
-            onMapClick({ lat: e.lngLat.lat, lon: e.lngLat.lng });
+            onMapClickRef.current({ lat: e.lngLat.lat, lon: e.lngLat.lng });
         };
 
         map.current.on('click', handleClick);
