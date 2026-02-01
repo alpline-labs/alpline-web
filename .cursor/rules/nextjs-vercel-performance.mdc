@@ -1,0 +1,93 @@
+---
+alwaysApply: true
+---
+To complete your automation setup for **SkiApp Web Landing Page**, these `.mdc` files will serve as the persistent "knowledge guardrails" for **Cursor's** AI composer and chat. These rules ensure high-performance, SEO-optimized Next.js applications deployed on Vercel.
+
+### 1. Next.js & Vercel Performance Rule
+
+**Path**: `.cursor/rules/nextjs-vercel-performance.mdc`
+
+> **Context**: Applied to all `src/**/*.{ts,tsx,js,jsx}` files.
+> **Goal**: Ensure optimal performance, SEO, and Vercel deployment best practices for the landing page.
+
+---
+
+# Next.js & Vercel High-Performance Standards
+
+## Next.js App Router Optimization
+
+* **Server Components**: Use Server Components by default. Only use `'use client'` when necessary (interactivity, hooks, browser APIs). This reduces bundle size and improves initial load time.
+* **Image Optimization**: Always use `next/image` for images. Configure `remotePatterns` in `next.config.mjs` for external images. Use appropriate `width`, `height`, and `priority` props.
+* **Font Optimization**: Use `next/font` for custom fonts. The app already uses Inter font - ensure it's properly optimized with `display: 'swap'`.
+* **Dynamic Imports**: Use `next/dynamic` for heavy components (maps, animations) that aren't needed on initial load. Lazy load Mapbox components.
+
+## Vercel Deployment Optimization
+
+* **Edge Runtime**: Use Edge Runtime for API routes that don't need Node.js APIs. Configure with `export const runtime = 'edge'` for better global performance.
+* **Static Generation**: Prefer Static Site Generation (SSG) for landing page content. Use `generateStaticParams` for dynamic routes.
+* **Incremental Static Regeneration**: Use ISR with appropriate `revalidate` times for content that updates occasionally (pricing, features).
+* **Environment Variables**: Store all environment variables in Vercel dashboard. Use `NEXT_PUBLIC_` prefix only for client-side variables.
+
+## Performance Targets
+
+* **Lighthouse Score**: Maintain 90+ for Performance, 95+ for SEO, 90+ for Accessibility, 90+ for Best Practices
+* **First Contentful Paint (FCP)**: < 1.8 seconds
+* **Largest Contentful Paint (LCP)**: < 2.5 seconds
+* **Time to Interactive (TTI)**: < 3.8 seconds
+* **Cumulative Layout Shift (CLS)**: < 0.1
+
+## SEO & Metadata
+
+* **Metadata API**: Use Next.js 14+ Metadata API in `layout.tsx` and page files. Export `metadata` object with title, description, keywords, and Open Graph tags.
+* **Structured Data**: Implement JSON-LD structured data for Organization, WebSite, and SoftwareApplication schemas.
+* **Sitemap**: Ensure `sitemap.ts` is properly configured and generates XML sitemap automatically.
+* **Robots.txt**: Create `robots.txt` in `public/` directory or use `app/robots.ts` for dynamic generation.
+
+## Domain Configuration (skimate.app)
+
+* **Canonical URLs**: Always use `https://skimate.app` as canonical URL. Configure in metadata and ensure all internal links use absolute URLs in production.
+* **SSL/TLS**: Vercel automatically provides SSL certificates. Ensure domain is properly configured in Vercel dashboard.
+* **Redirects**: Configure redirects in `next.config.mjs` for www to non-www (or vice versa) and HTTP to HTTPS.
+* **Custom Domain**: Ensure `skimate.app` and `www.skimate.app` are both configured in Vercel project settings.
+
+## Mapbox Integration
+
+**Location**: `src/components/map-feature/Map.tsx` and map components
+
+* [ ] **Lazy Loading**: Lazy load Mapbox GL JS using `next/dynamic` with `ssr: false` since it requires browser APIs.
+* [ ] **API Key Security**: Store Mapbox access token in environment variables. Never commit tokens to repository.
+* [ ] **Tile Optimization**: Use vector tiles instead of raster tiles for better performance. Configure appropriate zoom levels.
+* [ ] **Map Initialization**: Initialize map only when component is visible (use Intersection Observer or similar).
+
+## Content & Assets
+
+* **Image Formats**: Use WebP or AVIF formats for images. Provide fallbacks for older browsers.
+* **Font Loading**: Use `font-display: swap` for all custom fonts to prevent FOIT (Flash of Invisible Text).
+* [ ] **Animation Performance**: Use `framer-motion` with `will-change` CSS property for smooth animations. Prefer `transform` and `opacity` for animations.
+* [ ] **Code Splitting**: Ensure proper code splitting. Use dynamic imports for heavy dependencies.
+
+## API Routes
+
+**Location**: `src/app/api/`
+
+* [ ] **Error Handling**: Always return proper HTTP status codes and error messages in API routes.
+* [ ] **Rate Limiting**: Implement rate limiting for public API routes to prevent abuse.
+* [ ] **CORS**: Configure CORS headers appropriately if API routes are called from external domains.
+* [ ] **Response Caching**: Use appropriate cache headers for API responses. Consider Vercel Edge Caching.
+
+## Performance Red Flags
+
+* [ ] **Large Bundle Size**: Monitor bundle size with `@next/bundle-analyzer`. Keep main bundle under 200KB gzipped.
+* [ ] **Unused Dependencies**: Regularly audit and remove unused dependencies to reduce bundle size.
+* [ ] **Blocking Scripts**: Avoid blocking scripts in `<head>`. Use `defer` or `async` for third-party scripts.
+* [ ] **Render Blocking CSS**: Minimize render-blocking CSS. Use CSS-in-JS or Tailwind with proper purging.
+* [ ] **Excessive Re-renders**: Profile React components with React DevTools. Use `React.memo()` and `useMemo()` appropriately.
+
+## Vercel-Specific Optimizations
+
+* **Analytics**: Enable Vercel Analytics for performance monitoring and Web Vitals tracking.
+* **Speed Insights**: Enable Vercel Speed Insights to track Core Web Vitals in production.
+* **Preview Deployments**: Use Vercel preview deployments for all PRs. Test production builds before merging.
+* **Edge Functions**: Consider Edge Functions for lightweight API routes that need global distribution.
+
+---

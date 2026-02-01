@@ -1,0 +1,110 @@
+---
+alwaysApply: true
+---
+### 2. SEO & Content Optimization Rule
+
+**Path**: `.cursor/rules/seo-content-optimization.mdc`
+
+> **Context**: Applied to all `src/app/**/*.tsx`, `src/components/sections/**`, and content-related files.
+> **Goal**: Ensure optimal SEO, accessibility, and content structure for the landing page to maximize organic search visibility.
+
+---
+
+# SEO & Content Optimization Rules
+
+## Metadata & Structured Data
+
+* **Page Metadata**: Every page must export proper metadata using Next.js Metadata API. Include:
+  - `title`: Unique, descriptive title (50-60 characters)
+  - `description`: Compelling meta description (150-160 characters)
+  - `keywords`: Relevant keywords from site config
+  - `openGraph`: Complete OG tags for social sharing
+  - `twitter`: Twitter card metadata
+  - `alternates.canonical`: Canonical URL (https://skimate.app)
+
+* **Structured Data**: Implement JSON-LD structured data for:
+  - Organization schema (company info, logo, contact)
+  - WebSite schema (search action, site name)
+  - SoftwareApplication schema (app name, description, download links)
+  - BreadcrumbList for navigation (if applicable)
+
+## Content Structure
+
+**Location**: `src/components/sections/` and page components
+
+* [ ] **Heading Hierarchy**: Use proper heading hierarchy (h1 → h2 → h3). Only one h1 per page (in Hero section).
+* [ ] **Semantic HTML**: Use semantic HTML elements (`<section>`, `<article>`, `<nav>`, `<header>`, `<footer>`).
+* [ ] **Alt Text**: All images must have descriptive `alt` text. Decorative images should use empty alt (`alt=""`).
+* [ ] **Link Text**: Use descriptive link text. Avoid "click here" or "read more" without context.
+
+## Landing Page Sections
+
+* **Hero Section**: Must include:
+  - Clear value proposition
+  - Primary CTA button
+  - Hero image or video
+  - Trust indicators (if available)
+
+* **Features Section**: Each feature should have:
+  - Descriptive title
+  - Clear benefit statement
+  - Icon or visual
+  - Link to detailed feature page (if applicable)
+
+* **Social Proof**: Include:
+  - Testimonials with real names/avatars
+  - Press mentions/logos
+  - User statistics (if available)
+  - App store ratings (if available)
+
+## Accessibility (A11y)
+
+* **ARIA Labels**: Use ARIA labels for interactive elements without visible text (icons, buttons).
+* **Keyboard Navigation**: Ensure all interactive elements are keyboard accessible. Test tab order.
+* **Color Contrast**: Maintain WCAG AA contrast ratios (4.5:1 for text, 3:1 for UI components).
+* **Focus Indicators**: Ensure visible focus indicators for keyboard navigation.
+* **Screen Readers**: Test with screen readers. Use semantic HTML and ARIA attributes appropriately.
+
+## Performance & Core Web Vitals
+
+* **LCP Optimization**: Largest Contentful Paint should be < 2.5s. Optimize hero image, use `priority` prop on `next/image`.
+* **FID/INP**: First Input Delay / Interaction to Next Paint should be < 100ms. Minimize JavaScript execution time.
+* **CLS**: Cumulative Layout Shift should be < 0.1. Always specify image dimensions, avoid layout shifts.
+* **FCP**: First Contentful Paint should be < 1.8s. Optimize critical CSS, use font-display: swap.
+
+## Mobile Optimization
+
+* **Responsive Design**: Ensure all sections are fully responsive. Test on mobile (375px), tablet (768px), and desktop (1920px).
+* **Touch Targets**: Interactive elements should be at least 44x44px for touch targets.
+* **Viewport Meta**: Ensure proper viewport meta tag in layout (Next.js handles this automatically).
+* **Mobile-First**: Design mobile-first, then enhance for larger screens.
+
+## Content Best Practices
+
+* **Keyword Optimization**: Naturally integrate keywords from `siteConfig.keywords` into content. Avoid keyword stuffing.
+* **Content Freshness**: Update content regularly. Use ISR to regenerate pages periodically.
+* **Internal Linking**: Link to relevant internal pages (features, pricing, FAQ) to improve site structure.
+* **External Links**: Use `rel="noopener noreferrer"` for external links. Consider `rel="nofollow"` for user-generated content.
+
+## Analytics & Tracking
+
+* **Vercel Analytics**: Enable Vercel Analytics for performance monitoring.
+* **Google Analytics**: Consider adding Google Analytics 4 for user behavior tracking (if needed).
+* **Conversion Tracking**: Track key conversion events (download clicks, form submissions).
+* **Privacy**: Ensure compliance with GDPR/CCPA. Add cookie consent if using analytics.
+
+## Sitemap & Robots
+
+* **Sitemap**: Ensure `src/app/sitemap.ts` generates proper XML sitemap with all pages.
+* **Robots.txt**: Create `public/robots.txt` or `app/robots.ts` to control crawler access.
+* **XML Sitemap Updates**: Sitemap should update automatically when pages are added/removed.
+
+## Performance Red Flags
+
+* [ ] **Missing Alt Text**: All images must have alt text for accessibility and SEO.
+* [ ] **Duplicate Content**: Avoid duplicate meta descriptions or titles across pages.
+* [ ] **Missing Canonical URLs**: Every page should have a canonical URL to prevent duplicate content issues.
+* [ ] **Slow Page Load**: Monitor page load times. Optimize images, reduce JavaScript, use code splitting.
+* [ ] **Broken Links**: Regularly check for broken internal and external links.
+
+---
