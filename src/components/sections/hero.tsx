@@ -1,6 +1,5 @@
 "use client";
 
-import { Icons } from "@/components/icons";
 import { Section } from "@/components/section";
 import { easeInOutCubic } from "@/lib/animation";
 import { siteConfig } from "@/lib/config";
@@ -8,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { Navigation } from "lucide-react";
 
 export function Hero() {
@@ -34,8 +34,15 @@ export function Hero() {
             className="mb-16 relative z-20"
             style={{ transformOrigin: "top" }}
           >
-            <div className="bg-primary text-white text-xl font-bold p-4 h-20 w-20 flex items-center justify-center rounded-3xl mx-auto shadow-md">
-              <Icons.logo className="w-auto h-[40px]" />
+            <div className="h-20 w-20 flex items-center justify-center mx-auto">
+              <Image
+                src="/appicon.png"
+                alt="Skimate Logo"
+                width={80}
+                height={80}
+                className="rounded-2xl shadow-2xl"
+                priority
+              />
             </div>
           </motion.div>
           <motion.div
@@ -53,7 +60,7 @@ export function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.5, ease: easeInOutCubic }}
-            className="text-5xl font-bold mb-4 tracking-tighter"
+            className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 tracking-tight"
           >
             {siteConfig.description}
           </motion.h1>
@@ -61,11 +68,10 @@ export function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.7, ease: easeInOutCubic }}
-            className="max-w-2xl mx-auto text-xl mb-8 font-medium text-balance"
+            className="max-w-2xl mx-auto text-xl md:text-2xl mb-12 font-medium text-muted-foreground text-balance"
           >
-            {siteConfig.name} transforms your speech into text instantly.
-            Perfect for quick note-taking, content creation, and capturing ideas
-            on-the-go.
+            Turn-by-turn audio navigation. Real-time performance tracking. Live friend location.
+            Everything you need for the perfect ski day, all in one free app.
           </motion.p>
         </div>
 
@@ -73,64 +79,74 @@ export function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 1.2 }}
-          className="flex justify-center mb-16"
+          className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-16"
         >
-          <Link
-            href="/map"
-            className={cn(
-              buttonVariants({ size: "lg" }),
-              "rounded-full px-8 text-lg font-bold shadow-xl shadow-primary/20 hover:scale-105 transition-transform"
-            )}
+          <a
+            href="#"
+            className="inline-flex items-center justify-center px-6 py-3 bg-black dark:bg-white text-white dark:text-black rounded-xl hover:scale-105 transition-transform shadow-lg hover:shadow-xl"
           >
-            <Navigation className="mr-2 h-5 w-5" />
-            View Interactive Map
-          </Link>
+            <img
+              src="/download-apple.svg"
+              alt="Download on App Store"
+              className="h-12"
+            />
+          </a>
+          <a
+            href="#"
+            className="inline-flex items-center justify-center px-6 py-3 bg-black dark:bg-white text-white dark:text-black rounded-xl hover:scale-105 transition-transform shadow-lg hover:shadow-xl"
+          >
+            <img
+              src="/download-google.svg"
+              alt="Get it on Google Play"
+              className="h-12"
+            />
+          </a>
         </motion.div>
         <div className="flex flex-nowrap items-center justify-center gap-4 sm:gap-8 h-auto sm:h-[500px] select-none">
           <motion.img
-            src="/Device-1.png" //Snow groups
-            alt="iPhone"
+            src="/app-screens/feature-location-sharing.png"
+            alt="Live location sharing with friends"
             initial={{ opacity: 0, x: -200 }}
             animate={{ opacity: 1, x: 0 }}
             style={{ y: y1 }}
             transition={{ duration: 1, delay: 1 }}
-            className="w-40 sm:w-64 h-[333px] sm:h-[500px] flex-shrink-0"
+            className="w-40 sm:w-64 h-auto flex-shrink-0 rounded-3xl shadow-2xl"
           />
           <motion.img
-            src="/Device-2.png" //Levels
-            alt="iPhone"
+            src="/app-screens/feature-navigation.png"
+            alt="Turn-by-turn audio navigation"
             initial={{ opacity: 0, x: -100 }}
             animate={{ opacity: 1, x: 0 }}
             style={{ y: y2 }}
             transition={{ duration: 1, delay: 1 }}
-            className="w-40 sm:w-64 h-[333px] sm:h-[500px] flex-shrink-0"
+            className="w-40 sm:w-64 h-auto flex-shrink-0 rounded-3xl shadow-2xl"
           />
           <motion.img
-            src="/Device-3.png" //From - To
-            alt="iPhone"
+            src="/app-screens/hero-home-map.png"
+            alt="Interactive 3D resort maps"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             style={{ y: y3 }}
             transition={{ duration: 1, delay: 1 }}
-            className="w-40 sm:w-64 h-[333px] sm:h-[500px] flex-shrink-0"
+            className="w-40 sm:w-64 h-auto flex-shrink-0 rounded-3xl shadow-2xl"
           />
           <motion.img
-            src="/Device-4.png" // General
-            alt="iPhone"
+            src="/app-screens/feature-stats.png"
+            alt="Performance tracking and analytics"
             initial={{ opacity: 0, x: 100 }}
             animate={{ opacity: 1, x: 0 }}
             style={{ y: y4 }}
             transition={{ duration: 1, delay: 1 }}
-            className="w-40 sm:w-64 h-[333px] sm:h-[500px] flex-shrink-0"
+            className="w-40 sm:w-64 h-auto flex-shrink-0 rounded-3xl shadow-2xl"
           />
           <motion.img
-            src="/Device-5.png" // Snow grops
-            alt="iPhone"
+            src="/app-screens/feature-community.png"
+            alt="Connect with ski community"
             initial={{ opacity: 0, x: 200 }}
             animate={{ opacity: 1, x: 0 }}
             style={{ y: y5 }}
             transition={{ duration: 1, delay: 1 }}
-            className="w-40 sm:w-64 h-[333px] sm:h-[500px] flex-shrink-0"
+            className="w-40 sm:w-64 h-auto flex-shrink-0 rounded-3xl shadow-2xl"
           />
         </div>
       </main>

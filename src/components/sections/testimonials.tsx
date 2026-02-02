@@ -1,31 +1,43 @@
+"use client";
+
 import { Section } from "@/components/section";
 import { siteConfig } from "@/lib/config";
+import { motion } from "framer-motion";
 
 export function Testimonials() {
   return (
     <Section
-      title="Testimonials"
-      subtitle="What our users say"
-      className="container px-10"
+      id="testimonials"
+      className="py-24 bg-gradient-to-b from-muted/20 to-background"
     >
-      <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4 py-10">
-        {siteConfig.testimonials.map((testimonial, index) => (
-          <div
-            key={index}
-            className="bg-muted/60 overflow-hidden rounded-3xl flex flex-col h-fit"
-            style={{
-              gridRow: `span ${Math.floor(testimonial.text.length / 50) + 1}`,
-            }}
-          >
-            <div className="px-4 py-5 sm:p-6 flex-grow">
-              <div className="flex items-center mb-4">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-16">
+          <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-2">
+            TESTIMONIALS
+          </p>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+            What Our Users Say
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+          {siteConfig.testimonials.map((testimonial, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className="bg-card border border-border rounded-2xl p-6 hover:shadow-lg transition-shadow flex flex-col h-full"
+            >
+              <div className="flex items-start gap-3 mb-4">
                 <img
-                  className="h-10 w-10 rounded-full object-cover"
+                  className="h-12 w-12 rounded-full object-cover flex-shrink-0"
                   src={testimonial.image}
                   alt={testimonial.name}
                 />
-                <div className="ml-3">
-                  <h3 className="text-lg font-medium text-foreground">
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-base font-semibold text-foreground truncate">
                     {testimonial.name}
                   </h3>
                   <p className="text-sm text-muted-foreground">
@@ -33,10 +45,12 @@ export function Testimonials() {
                   </p>
                 </div>
               </div>
-              <p className="text-foreground">{testimonial.text}</p>
-            </div>
-          </div>
-        ))}
+              <p className="text-sm text-foreground leading-relaxed flex-grow">
+                {testimonial.text}
+              </p>
+            </motion.div>
+          ))}
+        </div>
       </div>
     </Section>
   );

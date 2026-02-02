@@ -1,5 +1,5 @@
-import { Icons } from "@/components/icons";
 import { siteConfig } from "@/lib/config";
+import Image from "next/image";
 import {
   InstagramLogoIcon,
   LinkedInLogoIcon,
@@ -12,9 +12,8 @@ interface Icon {
 }
 
 const icons: Icon[] = [
-  { icon: <LinkedInLogoIcon />, url: "#" },
-  { icon: <InstagramLogoIcon />, url: "#" },
-  { icon: <TwitterLogoIcon />, url: "#" },
+  { icon: <InstagramLogoIcon />, url: siteConfig.links.instagram },
+  { icon: <TwitterLogoIcon />, url: siteConfig.links.twitter },
 ];
 
 type Link = {
@@ -23,8 +22,11 @@ type Link = {
 };
 
 const links: Link[] = [
-  { text: "Pricing", url: "#" },
-  { text: "Contact", url: "#" },
+  { text: "Features", url: "#features" },
+  { text: "FAQ", url: "#faq" },
+  { text: "Privacy Policy", url: "#" },
+  { text: "Terms of Service", url: "#" },
+  { text: "Contact", url: `mailto:${siteConfig.links.email}` },
 ];
 
 export function Footer() {
@@ -32,7 +34,13 @@ export function Footer() {
     <footer className="flex flex-col gap-y-5 rounded-lg px-7 py-5 md:px-10 container">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-x-2">
-          <Icons.logo className="h-5 w-5" />
+          <Image
+            src="/appicon.png"
+            alt="Skimate Logo"
+            width={24}
+            height={24}
+            className="rounded"
+          />
           <h2 className="text-lg font-bold text-foreground">
             {siteConfig.name}
           </h2>
@@ -62,7 +70,7 @@ export function Footer() {
           ))}
         </ul>
         <div className="flex items-center justify-between text-sm font-medium tracking-tight text-muted-foreground">
-          <p>All rights reserved.</p>
+          <p>© {new Date().getFullYear()} {siteConfig.name}. All rights reserved.</p>
         </div>
       </div>
     </footer>

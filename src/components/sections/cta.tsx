@@ -1,10 +1,10 @@
-import { Icons } from "@/components/icons";
 import { buttonVariants } from "@/components/ui/button";
 import Marquee from "@/components/ui/marquee";
 import { siteConfig } from "@/lib/config";
 import { cn } from "@/lib/utils";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 const reviews = [
   {
@@ -136,23 +136,41 @@ export function CTA() {
             </Marquee>
           </div>
           <div className="z-10 mx-auto size-24 rounded-[2rem] border bg-white/10 p-3 shadow-2xl backdrop-blur-md dark:bg-black/10 lg:size-32">
-            <Icons.logo className="w-auto h-full" />
+            <Image
+              src="/appicon.png"
+              alt="Skimate Logo"
+              width={128}
+              height={128}
+              className="w-full h-full rounded-xl"
+            />
           </div>
           <div className="z-10 mt-4 flex flex-col items-center text-center text-black dark:text-white">
             <h1 className="text-3xl font-bold lg:text-4xl">
-              {siteConfig.name}
+              Ready to Transform Your Ski Days?
             </h1>
-            <p className="mt-2">{siteConfig.description}</p>
-            <Link
-              href="#"
-              className={cn(
-                buttonVariants({ variant: "default" }),
-                "h-8 text-white rounded-full group mt-4"
-              )}
-            >
-              {siteConfig.cta}
-              <ChevronRight className="ml-1 size-4 transition-all duration-300 ease-out group-hover:translate-x-1" />
-            </Link>
+            <p className="mt-2 text-lg">Download Skimate for free today</p>
+            <div className="flex flex-col sm:flex-row gap-4 mt-6">
+              <a
+                href="#"
+                className="inline-flex items-center justify-center px-6 py-3 bg-black dark:bg-white text-white dark:text-black rounded-xl hover:scale-105 transition-transform shadow-lg"
+              >
+                <img
+                  src="/download-apple.svg"
+                  alt="Download on App Store"
+                  className="h-12"
+                />
+              </a>
+              <a
+                href="#"
+                className="inline-flex items-center justify-center px-6 py-3 bg-black dark:bg-white text-white dark:text-black rounded-xl hover:scale-105 transition-transform shadow-lg"
+              >
+                <img
+                  src="/download-google.svg"
+                  alt="Get it on Google Play"
+                  className="h-12"
+                />
+              </a>
+            </div>
           </div>
           <div className="absolute inset-x-0 bottom-0 h-full bg-gradient-to-b from-transparent to-white to-70% dark:to-black" />
         </div>
