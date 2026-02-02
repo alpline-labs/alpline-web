@@ -1,6 +1,5 @@
 "use client";
 
-import { Icons } from "@/components/icons";
 import { MobileDrawer } from "@/components/mobile-drawer";
 import { buttonVariants } from "@/components/ui/button";
 import { easeInOutCubic } from "@/lib/animation";
@@ -8,6 +7,7 @@ import { siteConfig } from "@/lib/config";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion, useAnimation } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export function Header() {
@@ -58,55 +58,33 @@ export function Header() {
       <div className="flex justify-between items-center container mx-auto p-2">
         <Link
           href="/"
-          title="App"
+          title={siteConfig.name}
           className="relative mr-6 flex items-center space-x-2"
         >
-          <Icons.logo className="w-auto" />
+          <Image
+            src="/appicon.png"
+            alt="Skimate Logo"
+            width={32}
+            height={32}
+            className="rounded-lg"
+          />
           <span className="font-bold text-xl tracking-tight">{siteConfig.name}</span>
         </Link>
         {/* Navigation Links */}
-        <nav className="hidden lg:flex items-center space-x-6">
+        <nav className="hidden lg:flex items-center space-x-8">
           <Link
-            href="/map"
-            className="text-sm font-bold text-primary hover:text-primary/80 transition-colors flex items-center gap-1"
-          >
-            <Icons.logo className="w-4 h-4" />
-            MAP
-          </Link>
-          <Link
-            href="#featureScroll"
-            onClick={handleNavClick("featureScroll")}
+            href="#feature-showcase"
+            onClick={handleNavClick("feature-showcase")}
             className="text-sm font-medium hover:text-primary transition-colors"
           >
-            EXPERIENCE
-          </Link>
-          <Link
-            href="#features"
-            onClick={handleNavClick("features")}
-            className="text-sm font-medium hover:text-primary transition-colors"
-          >
-            FEATURES
-          </Link>
-          <Link
-            href="#benefits"
-            onClick={handleNavClick("benefits")}
-            className="text-sm font-medium hover:text-primary transition-colors"
-          >
-            BENEFITS
+            Features
           </Link>
           <Link
             href="#testimonials"
             onClick={handleNavClick("testimonials")}
             className="text-sm font-medium hover:text-primary transition-colors"
           >
-            TESTIMONIALS
-          </Link>
-          <Link
-            href="#pricing"
-            onClick={handleNavClick("pricing")}
-            className="text-sm font-medium hover:text-primary transition-colors"
-          >
-            PRICING
+            Testimonials
           </Link>
           <Link
             href="#faq"
@@ -115,18 +93,35 @@ export function Header() {
           >
             FAQ
           </Link>
+          <Link
+            href="/map"
+            className="text-sm font-medium hover:text-primary transition-colors"
+          >
+            Try Demo
+          </Link>
         </nav>
 
-        <div className="hidden lg:block">
-          <Link
+        <div className="hidden lg:flex items-center gap-3">
+          <a
             href="#"
-            className={cn(
-              buttonVariants({ variant: "default" }),
-              "h-8 text-white rounded-full group"
-            )}
+            className="inline-flex items-center justify-center hover:opacity-80 transition-opacity"
           >
-            {siteConfig.cta}
-          </Link>
+            <img
+              src="/download-apple.svg"
+              alt="Download on App Store"
+              className="h-9"
+            />
+          </a>
+          <a
+            href="#"
+            className="inline-flex items-center justify-center hover:opacity-80 transition-opacity"
+          >
+            <img
+              src="/download-google.svg"
+              alt="Get it on Google Play"
+              className="h-9"
+            />
+          </a>
         </div>
         <div className="mt-2 cursor-pointer block lg:hidden">
           <MobileDrawer />

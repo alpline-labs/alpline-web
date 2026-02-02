@@ -16,8 +16,8 @@ import {
 export const BLUR_FADE_DELAY = 0.15;
 
 export const siteConfig = {
-  name: "App",
-  description: "The ultimate all-in-one winter sports navigation & community app.",
+  name: "Skimate",
+  description: "Navigate smarter, ski better, connect deeper.",
   cta: "Download Now",
   url: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
   keywords: [
@@ -27,105 +27,108 @@ export const siteConfig = {
     "Mountain Navigation",
     "Ski Tracking",
     "Snow Community",
+    "Ski GPS",
+    "Resort Maps",
+    "Ski Social Network",
   ],
   links: {
-    email: "support@App.com",
-    twitter: "https://twitter.com/App",
-    discord: "https://discord.gg/App",
-    github: "https://github.com/App",
-    instagram: "https://instagram.com/App",
+    email: "support@skimate.app",
+    twitter: "https://twitter.com/skimate",
+    discord: "https://discord.gg/skimate",
+    github: "https://github.com/skimate",
+    instagram: "https://instagram.com/skimate",
   },
   features: [
     {
-      name: "Smart Routing",
+      name: "Smart Audio Navigation",
       description:
-        "Find the quickest, safest routes from A to B based on your skill level and preferences.",
-      icon: <CompassIcon className="h-6 w-6" />,
-    },
-    {
-      name: "Live Audio Navigation",
-      description:
-        "Receive real-time audio instructions without stopping to check your map.",
+        "Turn-by-turn audio guidance keeps you on track without stopping. Works seamlessly with your helmet's audio system for hands-free navigation on any run.",
       icon: <HeadphonesIcon className="h-6 w-6" />,
     },
     {
-      name: "Interactive 3D Maps",
+      name: "Interactive 3D Resort Maps",
       description:
-        "Explore resorts with detailed 2D and 3D maps showing trails, lifts, and facilities.",
+        "Explore over 2,000 resorts worldwide with stunning 3D maps. See real-time lift and trail status, locate facilities, and never get lost again.",
       icon: <MapIcon className="h-6 w-6" />,
     },
     {
-      name: "Performance Tracking",
+      name: "Performance Analytics",
       description:
-        "Track detailed stats on speed, vertical, run times, and fitness metrics.",
-      icon: <ActivityIcon className="h-6 w-6" />,
+        "Track speed, vertical, distance, and heart rate. Analyze your runs, compare with friends on private leaderboards, and improve season after season.",
+      icon: <BarChart3Icon className="h-6 w-6" />,
     },
     {
-      name: "Group Features",
+      name: "Live Location Sharing",
       description:
-        "Share locations, plan meetups, and navigate together with friends.",
-      icon: <UsersIcon className="h-6 w-6" />,
+        "See where your friends are on the mountain in real-time. Coordinate meet-ups and never lose your group again with smart group navigation features.",
+      icon: <MapPinIcon className="h-6 w-6" />,
     },
     {
-      name: "Community Connection",
+      name: "Resort Information",
       description:
-        "Connect with local riders, join events, and expand your winter sports network.",
+        "Get live updates on lift and trail status, weather conditions, and crowd levels. Access ski patrol info and resort facilities instantly.",
+      icon: <MountainSnowIcon className="h-6 w-6" />,
+    },
+    {
+      name: "Community & Events",
+      description:
+        "Connect with fellow skiers and snowboarders. Discover local events, plan group trips, and expand your mountain network.",
       icon: <HeartIcon className="h-6 w-6" />,
     },
   ],
   featureHighlight: [
     {
-      title: "Live Audio Navigation",
+      title: "Audio Navigation That Just Works",
       description:
-        "Enjoy uninterrupted flow with in-ear audio instructions at every turn. No more stopping to look at maps - just pure skiing pleasure. Works offline, so no internet connection required.",
-      imageSrc: "/Device-2.png",
+        "Turn-by-turn audio guidance delivered right to your ears. No more stopping to check your phone - keep your eyes on the slopes while Skimate guides you to your destination. Works seamlessly with any helmet audio system or earbuds, completely offline.",
+      imageSrc: "/app-screens/feature-navigation.png",
       direction: "rtl" as const,
     },
     {
-      title: "Interactive 3D Resort Maps",
+      title: "Stunning 3D Resort Maps",
       description:
-        "Explore over 2,000 resorts with stunning interactive maps. View real-time lift and trail status, locate facilities, and navigate with ease whether in 2D or 3D view.",
-      imageSrc: "/Device-3.png",
+        "Explore every corner of 2,000+ resorts worldwide with gorgeous interactive maps. Toggle between 2D and 3D views, see real-time lift and trail status, find facilities instantly, and plan your perfect ski day before you even get on the mountain.",
+      imageSrc: "/app-screens/hero-home-map.png",
       direction: "ltr" as const,
     },
     {
-      title: "Performance Analytics",
+      title: "Track Every Run, Improve Every Season",
       description:
-        "Track detailed stats about your day on the mountain. Analyze speed, vertical, run times, and fitness metrics to improve your skills and challenge yourself season after season.",
-      imageSrc: "/Device-4.png",
+        "Comprehensive performance tracking captures speed, distance, vertical, and more. Compete with friends on private leaderboards, analyze your best runs, track your fitness goals, and watch your skills improve year after year.",
+      imageSrc: "/app-screens/feature-stats.png",
       direction: "rtl" as const,
     },
   ],
   bento: [
     {
-      title: "Smart Routing & Navigation",
+      title: "Smart Routing for Your Skill Level",
       content:
-        "Set your start point and destination to instantly get the best route tailored to your skill level. Dynamic re-routing keeps you on track even if you make a wrong turn or encounter a closed lift.",
-      imageSrc: "/Device-1.png",
+        "Get personalized routes based on your ability. Never accidentally end up on terrain that's too challenging or too easy. Dynamic re-routing adjusts if you take a wrong turn or encounter a closed lift.",
+      imageSrc: "/app-screens/feature-route-planning.png",
       imageAlt: "Ski routing illustration",
       fullWidth: true,
     },
     {
-      title: "Live Audio Instructions",
+      title: "Hands-Free Audio Guidance",
       content:
-        "Enjoy hands-free, in-ear audio navigation that keeps your eyes on the mountain and your focus on skiing. Never stop to check maps again.",
-      imageSrc: "/Device-2.png",
+        "Keep your eyes on the mountain while audio instructions guide you at every turn. Works with any helmet audio or earbuds, offline.",
+      imageSrc: "/app-screens/feature-navigation.png",
       imageAlt: "Audio navigation illustration",
       fullWidth: false,
     },
     {
-      title: "Group Ski Features",
+      title: "Find Your Friends Instantly",
       content:
-        "Share locations, coordinate meet-ups, and navigate together with friends. Never lose your group on the mountain again.",
-      imageSrc: "/Device-3.png",
-      imageAlt: "Group ski illustration",
+        "See exactly where your group is on the mountain. Set meet-up points and never waste time coordinating over text.",
+      imageSrc: "/app-screens/feature-location-sharing.png",
+      imageAlt: "Group location illustration",
       fullWidth: false,
     },
     {
-      title: "Performance Tracking",
+      title: "Detailed Performance Analytics",
       content:
-        "Track detailed stats about your day on the slopes. Analyze speed, vertical, run times, and fitness metrics while challenging friends on seasonal leaderboards.",
-      imageSrc: "/Device-4.png",
+        "Every run tracked automatically. Speed, vertical, distance, time - all captured seamlessly. Compare with friends and track your improvement season after season.",
+      imageSrc: "/app-screens/feature-stats.png",
       imageAlt: "Performance tracking illustration",
       fullWidth: true,
     },
@@ -133,67 +136,31 @@ export const siteConfig = {
   benefits: [
     {
       id: 1,
-      text: "Ski with confidence on any mountain with personalized navigation.",
-      image: "/Device-6.png",
+      text: "Navigate any resort with confidence, even on your first visit.",
+      image: "/app-screens/hero-home-map.png",
     },
     {
       id: 2,
-      text: "Never miss a meeting point or get lost on unfamiliar slopes again.",
-      image: "/Device-7.png",
+      text: "Keep your group together without constant phone checking.",
+      image: "/app-screens/feature-location-sharing.png",
     },
     {
       id: 3,
-      text: "Improve your skills with detailed performance analytics.",
-      image: "/Device-8.png",
+      text: "Track your improvement and compete with friends all season.",
+      image: "/app-screens/feature-stats.png",
     },
     {
       id: 4,
-      text: "Connect with local riders and expand your winter sports network.",
-      image: "/Device-1.png",
-    },
-  ],
-  pricing: [
-    {
-      name: "Free",
-      href: "#",
-      price: "$0",
-      period: "forever",
-      yearlyPrice: "$0",
-      features: [
-        "Basic routing and navigation",
-        "Limited resort maps",
-        "Performance tracking basics",
-        "Group location sharing (up to 3 friends)",
-      ],
-      description: "Perfect for casual riders",
-      buttonText: "Download Free",
-      isPopular: false,
-    },
-    {
-      name: "Premium",
-      href: "#",
-      price: "$9.99",
-      period: "month",
-      yearlyPrice: "$79.99",
-      features: [
-        "Advanced routing with skill-based customization",
-        "Full interactive 3D maps for 2000+ resorts",
-        "Complete performance analytics",
-        "Unlimited group features",
-        "Community event access",
-        "Offline mode for all resorts",
-      ],
-      description: "The ultimate winter sports experience",
-      buttonText: "Go Premium",
-      isPopular: true,
+      text: "Discover new trails and find the best runs for your skill level.",
+      image: "/app-screens/feature-route-planning.png",
     },
   ],
   faqs: [
     {
-      question: "How does App work without internet connection?",
+      question: "How does Skimate work without internet connection?",
       answer: (
         <span>
-          App downloads all mapping data to your phone so the app works offline.
+          Skimate downloads all mapping data to your phone so the app works offline.
           This gives you full routing and navigation functionality even when you don&apos;t have
           a data connection on the mountain. Your activity data will sync once you&apos;re connected again.
         </span>
@@ -203,38 +170,48 @@ export const siteConfig = {
       question: "How many resorts are supported?",
       answer: (
         <span>
-          App currently supports over 2,000 resorts worldwide across North America, the European Alps,
+          Skimate currently supports over 2,000 resorts worldwide across North America, the European Alps,
           Japan, Australia, and New Zealand. We&apos;re constantly adding new resorts to our database.
         </span>
       ),
     },
     {
-      question: "How does the group ski feature work?",
+      question: "How does the audio navigation work?",
       answer: (
         <span>
-          Our Group Ski feature lets you share your location or set a meet-up point and guides everyone there.
-          You can see all your friends on the interactive map and coordinate in real-time. Location sharing is
-          privacy-focused, so you can turn it on or off at any time.
+          Skimate provides turn-by-turn audio instructions that work seamlessly with any earbuds or helmet audio system.
+          The audio guides you at every intersection without interrupting your music or calls. It works completely offline
+          and uses advanced GPS tracking to keep you on the right path.
         </span>
       ),
     },
     {
-      question: "What kind of performance stats does App track?",
+      question: "Can I see where my friends are on the mountain?",
       answer: (
         <span>
-          App tracks a comprehensive set of performance metrics including speed, vertical, distance,
-          run count, heart rate (with connected devices), calories burned, and even identifies your best
-          runs. You can analyze your data by day, trip, or season.
+          Yes! With live location sharing, you can see exactly where your friends are on the resort map in real-time.
+          Set meet-up points, coordinate group runs, and never lose track of your crew. All location sharing is
+          privacy-focused and you can toggle it on or off anytime.
         </span>
       ),
     },
     {
-      question: "Can I connect with other skiers and snowboarders?",
+      question: "What kind of performance stats does Skimate track?",
       answer: (
         <span>
-          Absolutely! App has a built-in community platform where you can connect with fellow winter
-          sports enthusiasts, discover and join local events, plan group outings, and expand your
-          mountain network. It&apos;s the perfect way to find your riding crew!
+          Skimate tracks comprehensive metrics including speed, vertical distance, total distance, run count,
+          heart rate (with connected devices), calories burned, and time on mountain. Compare your stats with
+          friends on private leaderboards and track your progress season after season.
+        </span>
+      ),
+    },
+    {
+      question: "Is Skimate really free?",
+      answer: (
+        <span>
+          Yes! Skimate is completely free to download and use. All core features including audio navigation,
+          3D maps, performance tracking, and social features are available at no cost. We believe everyone
+          should have access to great navigation and safety tools on the mountain.
         </span>
       ),
     },
@@ -243,10 +220,10 @@ export const siteConfig = {
     {
       id: 1,
       menu: [
-        { href: "#", text: "Features" },
-        { href: "#", text: "Pricing" },
+        { href: "#features", text: "Features" },
         { href: "#", text: "Resorts" },
         { href: "#", text: "Community" },
+        { href: "#faq", text: "FAQ" },
         { href: "#", text: "Contact" },
       ],
     },
@@ -254,67 +231,51 @@ export const siteConfig = {
   testimonials: [
     {
       id: 1,
-      text: "The audio navigation is incredible - I've discovered parts of resorts I never knew existed!",
-      name: "Alex Johnson",
+      text: "The audio navigation is a game-changer. I never have to stop and pull out my phone to check where I'm going. It's like having a personal guide in my ear!",
+      name: "Sarah Chen",
       role: "Intermediate Skier",
       image:
           "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cG9ydHJhaXR8ZW58MHx8MHx8fDA%3D",
     },
     {
       id: 2,
-      text: "Group Ski feature has completely eliminated the hassle of finding friends on the mountain.",
-      name: "Brian Miller",
-      role: "Ski Trip Organizer",
+      text: "Finally found a solution to losing my friends on the mountain! The live location feature means we can split up and easily meet back up for lunch.",
+      name: "Marcus Thompson",
+      role: "Group Trip Organizer",
       image:
           "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fHBvcnRyYWl0fGVufDB8fDB8fHww",
     },
     {
       id: 3,
-      text: "The performance tracking helped me improve my technique and set new personal records this season.",
-      name: "Christine Davis",
+      text: "Love seeing my stats improve week after week. The leaderboards with friends add a fun competitive element to our ski days.",
+      name: "Jamie Rodriguez",
       role: "Advanced Snowboarder",
       image:
           "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fHBvcnRyYWl0fGVufDB8fDB8fHww",
     },
     {
       id: 4,
-      text: "I met my entire riding crew through App's community features. Game changer!",
-      name: "Diana Evans",
-      role: "Social Skier",
-      image:
-          "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mjh8fHBvcnRyYWl0fGVufDB8fDB8fHww",
-    },
-    {
-      id: 5,
-      text: "The skill-based routing has given me confidence to explore new resorts without fear of ending up on runs beyond my ability.",
-      name: "Ethan Ford",
-      role: "Beginner Skier",
+      text: "The 3D maps helped me discover trails I never knew existed. Now I feel confident exploring any resort without getting lost.",
+      name: "Alex Petrov",
+      role: "Resort Explorer",
       image:
           "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzJ8fHBvcnRyYWl0fGVufDB8fDB8fHww",
     },
     {
-      id: 6,
-      text: "The 3D resort maps are incredibly detailed - I can plan my entire day before even hitting the slopes.",
-      name: "Fiona Grant",
-      role: "Resort Explorer",
+      id: 5,
+      text: "As a beginner, the skill-based routing gives me confidence to explore without accidentally ending up on a black diamond run!",
+      name: "Emily Watson",
+      role: "Beginner Skier",
       image:
           "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDB8fHBvcnRyYWl0fGVufDB8fDB8fHww",
     },
     {
-      id: 7,
-      text: "I love that I can track my fitness data along with my riding stats. Great for my fitness goals!",
-      name: "George Harris",
-      role: "Fitness-Focused Rider",
+      id: 6,
+      text: "Met some of my best ski buddies through the community features. It's not just an app, it's a whole network of riders.",
+      name: "David Kim",
+      role: "Community Enthusiast",
       image:
           "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDR8fHBvcnRyYWl0fGVufDB8fDB8fHww",
-    },
-    {
-      id: 8,
-      text: "The offline functionality is essential when you're in the mountains with spotty service. App never lets me down.",
-      name: "Hannah Irving",
-      role: "Backcountry Enthusiast",
-      image:
-          "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTJ8fHBvcnRyYWl0fGVufDB8fDB8fHww",
     },
   ],
 };

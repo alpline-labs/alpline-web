@@ -1,15 +1,10 @@
-import { Benefits } from "@/components/sections/benefits";
-import { BentoGrid } from "@/components/sections/bento";
 import { CTA } from "@/components/sections/cta";
 import { FAQ } from "@/components/sections/faq";
-import { FeatureHighlight } from "@/components/sections/feature-highlight";
-import { FeatureScroll } from "@/components/sections/feature-scroll";
-import { Features } from "@/components/sections/features";
+import { FeatureShowcase } from "@/components/sections/feature-showcase";
+import { AdditionalFeatures } from "@/components/sections/additional-features";
 import { Footer } from "@/components/sections/footer";
 import { Header } from "@/components/sections/header";
 import { Hero } from "@/components/sections/hero";
-import { Pricing } from "@/components/sections/pricing";
-import { Press } from "@/components/sections/social-proof-press";
 import { Testimonials } from "@/components/sections/testimonials";
 
 export default function Home() {
@@ -17,14 +12,9 @@ export default function Home() {
     <main className="relative">
       <Header />
       <Hero />
-      <FeatureScroll />
-      <FeatureHighlight />
-      <BentoGrid />
-      <Benefits />
-      <Features />
-      <Press />
+      <FeatureShowcase />
+      <AdditionalFeatures />
       <Testimonials />
-      <Pricing />
       <FAQ />
       <CTA />
       <Footer />

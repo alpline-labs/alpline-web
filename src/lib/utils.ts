@@ -25,7 +25,7 @@ export function constructMetadata({
   return {
     title: {
       template: "%s | " + siteConfig.name,
-      default: siteConfig.name,
+      default: siteConfig.name + " - " + siteConfig.description,
     },
     description: description || siteConfig.description,
     keywords: siteConfig.keywords,
@@ -45,7 +45,17 @@ export function constructMetadata({
       type: "website",
       locale: "en_US",
     },
-    icons: "/favicon.ico",
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [image],
+      creator: "@skimate",
+    },
+    icons: {
+      icon: "/favicon.ico",
+      apple: "/appicon.png",
+    },
     metadataBase: new URL(siteConfig.url),
     authors: [
       {
@@ -53,6 +63,12 @@ export function constructMetadata({
         url: siteConfig.url,
       },
     ],
+    applicationName: siteConfig.name,
+    appleWebApp: {
+      capable: true,
+      title: siteConfig.name,
+      statusBarStyle: "default",
+    },
     ...props,
   };
 }
