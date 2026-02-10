@@ -104,7 +104,7 @@ export function Hero() {
         </motion.div>
         <div className="flex flex-nowrap items-center justify-center gap-4 sm:gap-8 h-auto sm:h-[500px] select-none">
           <motion.img
-            src="/app-screens/feature-location-sharing.png"
+            src="/app-screens/feature-friends-navigate.png"
             alt="Live location sharing with friends"
             initial={{ opacity: 0, x: -200 }}
             animate={{ opacity: 1, x: 0 }}
@@ -113,7 +113,7 @@ export function Hero() {
             className="w-40 sm:w-64 h-auto flex-shrink-0 rounded-3xl shadow-2xl"
           />
           <motion.img
-            src="/app-screens/feature-navigation.png"
+            src="/app-screens/feature-search.png"
             alt="Turn-by-turn audio navigation"
             initial={{ opacity: 0, x: -100 }}
             animate={{ opacity: 1, x: 0 }}
@@ -131,7 +131,7 @@ export function Hero() {
             className="w-40 sm:w-64 h-auto flex-shrink-0 rounded-3xl shadow-2xl"
           />
           <motion.img
-            src="/app-screens/feature-stats.png"
+            src="/app-screens/feature-route-planning.png"
             alt="Performance tracking and analytics"
             initial={{ opacity: 0, x: 100 }}
             animate={{ opacity: 1, x: 0 }}
