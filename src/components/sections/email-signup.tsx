@@ -124,7 +124,7 @@ export function EmailSignup() {
             animate={{ opacity: 1, y: 0 }}
             className="mt-4 text-sm text-muted-foreground text-center"
           >
-            Thanks for joining! We'll notify you when SkiMate is ready.
+            Thanks for joining! We&apos;ll notify you when SkiMate is ready.
           </motion.p>
         )}
       </div>
