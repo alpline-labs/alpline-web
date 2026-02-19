@@ -1,14 +1,16 @@
 import { neon } from "@neondatabase/serverless";
 import { NextRequest, NextResponse } from "next/server";
 
-if (!process.env.DATABASE_URL) {
-  throw new Error("DATABASE_URL environment variable is not set");
+function getSQL() {
+  if (!process.env.DATABASE_URL) {
+    throw new Error("DATABASE_URL environment variable is not set");
+  }
+  return neon(process.env.DATABASE_URL);
 }
-
-const sql = neon(process.env.DATABASE_URL);
 
 export async function POST(req: NextRequest) {
   try {
+    const sql = getSQL();
     const { email } = await req.json();
 
     // Validate email
