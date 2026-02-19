@@ -24,8 +24,8 @@ type Link = {
 const links: Link[] = [
   { text: "Features", url: "#features" },
   { text: "FAQ", url: "#faq" },
-  { text: "Privacy Policy", url: "#" },
-  { text: "Terms of Service", url: "#" },
+  { text: "Privacy Policy", url: "/privacy" },
+  { text: "Terms of Service", url: "/terms" },
   { text: "Contact", url: `mailto:${siteConfig.links.email}` },
 ];
 

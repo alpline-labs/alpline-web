@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useRef, useEffect } from 'react';
-import mapboxgl from 'mapbox-gl';
-import 'mapbox-gl/dist/mapbox-gl.css';
-import { MAPBOX_TOKEN } from './config';
+import * as maptilersdk from '@maptiler/sdk';
+import '@maptiler/sdk/dist/maptiler-sdk.css';
+import { MAPTILER_API_KEY } from './config';
 import type { Location, Route } from './types';
 
 interface MapProps {
@@ -24,9 +24,9 @@ export const Map: React.FC<MapProps> = ({
     destination
 }) => {
     const mapContainer = useRef<HTMLDivElement>(null);
-    const map = useRef<mapboxgl.Map | null>(null);
-    const originMarker = useRef<mapboxgl.Marker | null>(null);
-    const destMarker = useRef<mapboxgl.Marker | null>(null);
+    const map = useRef<maptilersdk.Map | null>(null);
+    const originMarker = useRef<maptilersdk.Marker | null>(null);
+    const destMarker = useRef<maptilersdk.Marker | null>(null);
 
     const onMapClickRef = useRef(onMapClick);
 
@@ -38,62 +38,35 @@ export const Map: React.FC<MapProps> = ({
     useEffect(() => {
         if (!mapContainer.current || map.current) return;
 
-        mapboxgl.accessToken = MAPBOX_TOKEN;
+        maptilersdk.config.apiKey = MAPTILER_API_KEY;
 
-        map.current = new mapboxgl.Map({
+        map.current = new maptilersdk.Map({
             container: mapContainer.current,
-            style: 'mapbox://styles/mapbox/outdoors-v12',
+            style: maptilersdk.MapStyle.WINTER,
             center,
             zoom,
             pitch: 45,
             bearing: 0,
-            antialias: true
+            projection: 'globe',
+            terrain: true,
+            terrainExaggeration: 1.5,
         });
 
-        map.current.addControl(new mapboxgl.NavigationControl({
+        map.current.addControl(new maptilersdk.NavigationControl({
             showCompass: true,
             visualizePitch: true
         }), 'bottom-right');
 
         map.current.addControl(
-            new mapboxgl.GeolocateControl({
+            new maptilersdk.GeolocateControl({
                 positionOptions: { enableHighAccuracy: true },
                 trackUserLocation: true,
-                showUserHeading: true
             }),
             'bottom-right'
         );
 
-        map.current.on('load', () => {
-            if (!map.current) return;
-
-            // Add 3D terrain
-            map.current.addSource('mapbox-dem', {
-                type: 'raster-dem',
-                url: 'mapbox://mapbox.mapbox-terrain-dem-v1',
-                tileSize: 512,
-                maxzoom: 14
-            });
-
-            map.current.setTerrain({ source: 'mapbox-dem', exaggeration: 1.5 });
-
-            // Add sky layer
-            map.current.addLayer({
-                id: 'sky',
-                type: 'sky',
-                paint: {
-                    'sky-type': 'atmosphere',
-                    'sky-atmosphere-sun': [0.0, 0.0],
-                    'sky-atmosphere-sun-intensity': 15
-                }
-            });
-
-            // Load ski infrastructure
-            loadSkiInfrastructure();
-        });
-
         // Click handler
-        const handleClick = (e: mapboxgl.MapMouseEvent) => {
+        const handleClick = (e: maptilersdk.MapMouseEvent) => {
             onMapClickRef.current({ lat: e.lngLat.lat, lon: e.lngLat.lng });
         };
 
@@ -107,76 +80,6 @@ export const Map: React.FC<MapProps> = ({
             }
         };
     }, []);
-
-    const loadSkiInfrastructure = async () => {
-        if (!map.current) return;
-
-        try {
-            // Load pistes (ski runs)
-            const pistesResponse = await fetch('/ski-data/pistes.geojson');
-            if (pistesResponse.ok) {
-                const pistesData = await pistesResponse.json();
-
-                if (!map.current.getSource('pistes')) {
-                    map.current.addSource('pistes', {
-                        type: 'geojson',
-                        data: pistesData
-                    });
-
-                    // Add layers
-                    const difficulties = [
-                        { id: 'pistes-easy', filter: ['in', ['get', 'piste:difficulty'], ['literal', ['novice', 'easy', 'eaasy']]], color: '#4CAF50' },
-                        { id: 'pistes-intermediate', filter: ['in', ['get', 'piste:difficulty'], ['literal', ['intermediate', 'medium', 'blue']]], color: '#2196F3' },
-                        { id: 'pistes-advanced', filter: ['==', ['get', 'piste:difficulty'], 'advanced'], color: '#F44336' },
-                        { id: 'pistes-expert', filter: ['in', ['get', 'piste:difficulty'], ['literal', ['expert', 'extreme', 'freeride', 'L']]], color: '#000000' }
-                    ];
-
-                    difficulties.forEach(diff => {
-                        map.current!.addLayer({
-                            id: diff.id,
-                            type: 'line',
-                            source: 'pistes',
-                            filter: ['all', ['==', ['geometry-type'], 'LineString'], diff.filter],
-                            paint: {
-                                'line-color': diff.color,
-                                'line-width': 2.5,
-                                'line-opacity': 0.8
-                            }
-                        });
-                    });
-                }
-            }
-
-            // Load lifts
-            const liftsResponse = await fetch('/ski-data/lifts.geojson');
-            if (liftsResponse.ok) {
-                const liftsData = await liftsResponse.json();
-
-                if (!map.current.getSource('lifts')) {
-                    map.current.addSource('lifts', {
-                        type: 'geojson',
-                        data: liftsData
-                    });
-
-                    map.current.addLayer({
-                        id: 'lifts',
-                        type: 'line',
-                        source: 'lifts',
-                        filter: ['==', ['geometry-type'], 'LineString'],
-                        paint: {
-                            'line-color': '#FF6B6B',
-                            'line-width': 2,
-                            'line-dasharray': [3, 2],
-                            'line-opacity': 0.8
-                        }
-                    });
-                }
-            }
-
-        } catch (error) {
-            console.error('Error loading ski infrastructure:', error);
-        }
-    };
 
     // Update map center when resort changes
     useEffect(() => {
@@ -192,7 +95,7 @@ export const Map: React.FC<MapProps> = ({
 
         if (origin) {
             const el = createMarkerElement('A', '#3b82f6');
-            originMarker.current = new mapboxgl.Marker({ element: el })
+            originMarker.current = new maptilersdk.Marker({ element: el })
                 .setLngLat([origin.lon, origin.lat])
                 .addTo(map.current);
         }
@@ -205,7 +108,7 @@ export const Map: React.FC<MapProps> = ({
 
         if (destination) {
             const el = createMarkerElement('B', '#ef4444');
-            destMarker.current = new mapboxgl.Marker({ element: el })
+            destMarker.current = new maptilersdk.Marker({ element: el })
                 .setLngLat([destination.lon, destination.lat])
                 .addTo(map.current);
         }
@@ -250,8 +153,8 @@ export const Map: React.FC<MapProps> = ({
         if (routes.length > 0) {
             const coordinates = routes[0].geometry.coordinates;
             const bounds = coordinates.reduce(
-                (bounds: mapboxgl.LngLatBounds, coord: any) => bounds.extend(coord as [number, number]),
-                new mapboxgl.LngLatBounds(coordinates[0] as [number, number], coordinates[0] as [number, number])
+                (bounds: maptilersdk.LngLatBounds, coord: any) => bounds.extend(coord as [number, number]),
+                new maptilersdk.LngLatBounds(coordinates[0] as [number, number], coordinates[0] as [number, number])
             );
             map.current.fitBounds(bounds, { padding: 100, duration: 1000 });
         }
