@@ -20,7 +20,7 @@ alwaysApply: true
   - `keywords`: Relevant keywords from site config
   - `openGraph`: Complete OG tags for social sharing
   - `twitter`: Twitter card metadata
-  - `alternates.canonical`: Canonical URL (https://skimate.app)
+  - `alternates.canonical`: Canonical URL (https://getalpline.com)
 
 * **Structured Data**: Implement JSON-LD structured data for:
   - Organization schema (company info, logo, contact)

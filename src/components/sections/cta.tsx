@@ -138,7 +138,7 @@ export function CTA() {
           <div className="z-10 mx-auto size-24 rounded-[2rem] border bg-white/10 p-3 shadow-2xl backdrop-blur-md dark:bg-black/10 lg:size-32">
             <Image
               src="/appicon.png"
-              alt="Skimate Logo"
+              alt="Alpline Logo"
               width={128}
               height={128}
               className="w-full h-full rounded-xl"
@@ -148,7 +148,7 @@ export function CTA() {
             <h1 className="text-3xl font-bold lg:text-4xl">
               Ready to Transform Your Ski Days?
             </h1>
-            <p className="mt-2 text-lg">Download Skimate for free today</p>
+            <p className="mt-2 text-lg">Download Alpline for free today</p>
             <div className="flex flex-col sm:flex-row gap-4 mt-6">
               <a
                 href="#"

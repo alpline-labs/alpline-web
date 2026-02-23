@@ -3,7 +3,7 @@ import { Footer } from "@/components/sections/footer";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | Skimate",
+  title: "Privacy Policy | Alpline",
 };
 
 export default function PrivacyPage() {
@@ -12,15 +12,15 @@ export default function PrivacyPage() {
       <Header />
       <div className="container py-24 md:py-32">
         <article className="prose prose-lg dark:prose-invert mx-auto max-w-4xl">
-          <h1>Skimate Privacy Policy</h1>
+          <h1>Alpline Privacy Policy</h1>
           <p><strong>Last Updated: February 19, 2026</strong></p>
 
           <h2>Introduction</h2>
           <p>
-            Welcome to Skimate. We are committed to protecting your privacy and ensuring you understand how we collect, use, and safeguard your information. This Privacy Policy explains our data practices for the Skimate mobile application and related services.
+            Welcome to Alpline. We are committed to protecting your privacy and ensuring you understand how we collect, use, and safeguard your information. This Privacy Policy explains our data practices for the Alpline mobile application and related services.
           </p>
           <p>
-            Skimate is operated by EXPOMATRIX PROPERTIES LIMITED (&ldquo;we,&rdquo; &ldquo;us,&rdquo; or &ldquo;our&rdquo;), a company registered in England and Wales (Company Number 15639549). By using Skimate, you agree to the collection and use of information in accordance with this policy.
+            Alpline is operated by EXPOMATRIX PROPERTIES LIMITED (&ldquo;we,&rdquo; &ldquo;us,&rdquo; or &ldquo;our&rdquo;), a company registered in England and Wales (Company Number 15639549). By using Alpline, you agree to the collection and use of information in accordance with this policy.
           </p>
 
           <h2>1. Information We Collect</h2>
@@ -112,7 +112,7 @@ export default function PrivacyPage() {
 
           <h3>2.2 Social Features</h3>
           <ul>
-            <li>Connect you with friends on Skimate</li>
+            <li>Connect you with friends on Alpline</li>
             <li>Enable location sharing with your chosen contacts</li>
             <li>Display friend locations on maps (with consent)</li>
             <li>Facilitate group coordination and meet-ups</li>
@@ -175,7 +175,7 @@ export default function PrivacyPage() {
           </ul>
 
           <h3>3.2 Service Providers</h3>
-          <p>We share information with trusted third-party service providers who assist in operating Skimate:</p>
+          <p>We share information with trusted third-party service providers who assist in operating Alpline:</p>
           <ul>
             <li><strong>Cloud Infrastructure:</strong> Google Cloud Platform for data storage and processing</li>
             <li><strong>Mapping Services:</strong> MapTiler for map rendering and display</li>
@@ -389,10 +389,10 @@ export default function PrivacyPage() {
           <h2>7. Children&apos;s Privacy</h2>
 
           <h3>7.1 Age Requirements</h3>
-          <p>Skimate is not intended for children under 13 years of age. We do not knowingly collect information from children under 13.</p>
+          <p>Alpline is not intended for children under 13 years of age. We do not knowingly collect information from children under 13.</p>
 
           <h3>7.2 Parental Consent</h3>
-          <p>Users aged 13-17 must have parental consent to use Skimate. Parents can:</p>
+          <p>Users aged 13-17 must have parental consent to use Alpline. Parents can:</p>
           <ul>
             <li>Monitor their child&apos;s account usage</li>
             <li>Control privacy settings</li>
@@ -413,7 +413,7 @@ export default function PrivacyPage() {
           <h2>8. International Data Transfers</h2>
 
           <h3>8.1 Data Location</h3>
-          <p>Skimate operates globally. Your information may be:</p>
+          <p>Alpline operates globally. Your information may be:</p>
           <ul>
             <li>Stored on servers in the United States</li>
             <li>Processed in countries where we or our service providers operate</li>
@@ -476,7 +476,7 @@ export default function PrivacyPage() {
           <h3>9.4 Exercising Your Rights</h3>
           <p>To exercise these rights:</p>
           <ul>
-            <li>Email: privacy@skimate.app</li>
+            <li>Email: privacy@getalpline.com</li>
             <li>In-app: Settings &gt; Privacy &gt; Data Rights</li>
             <li>Response time: Within 30 days</li>
             <li>Verification: We may request identity confirmation</li>
@@ -539,7 +539,7 @@ export default function PrivacyPage() {
 
           <h3>13.1 Privacy Questions</h3>
           <p>For privacy-related questions or concerns:</p>
-          <p><strong>Email:</strong> privacy@skimate.app</p>
+          <p><strong>Email:</strong> privacy@getalpline.com</p>
           <p>
             <strong>Mail:</strong><br />
             EXPOMATRIX PROPERTIES LIMITED<br />
@@ -551,7 +551,7 @@ export default function PrivacyPage() {
           <p><strong>In-App:</strong> Settings &gt; Help &amp; Support &gt; Privacy</p>
 
           <h3>13.2 Data Protection Officer</h3>
-          <p>For GDPR-related inquiries: <strong>dpo@skimate.app</strong></p>
+          <p>For GDPR-related inquiries: <strong>dpo@getalpline.com</strong></p>
 
           <h3>13.3 Response Time</h3>
           <ul>
@@ -577,7 +577,7 @@ export default function PrivacyPage() {
             <li><strong>EU/EEA Users:</strong> You can lodge complaints with your local data protection authority</li>
           </ul>
 
-          <p><strong>Representative:</strong> EU Representative: Varniethan Ketheeswaran — Email: dpo@skimate.app</p>
+          <p><strong>Representative:</strong> EU Representative: Varniethan Ketheeswaran — Email: dpo@getalpline.com</p>
 
           <h3>14.2 California</h3>
           <p><strong>CCPA Disclosures:</strong></p>
@@ -598,10 +598,10 @@ export default function PrivacyPage() {
           <h2>15. Additional Terms</h2>
 
           <h3>15.1 No Medical Advice</h3>
-          <p>Skimate is not a medical device. Performance and heart rate data is for informational purposes only and should not replace professional medical advice.</p>
+          <p>Alpline is not a medical device. Performance and heart rate data is for informational purposes only and should not replace professional medical advice.</p>
 
           <h3>15.2 Safety Disclaimer</h3>
-          <p>While we provide safety features and emergency services integration, Skimate is a navigation tool, not a substitute for proper safety equipment, skiing training and knowledge, weather awareness and judgment, resort safety guidelines, or professional emergency services.</p>
+          <p>While we provide safety features and emergency services integration, Alpline is a navigation tool, not a substitute for proper safety equipment, skiing training and knowledge, weather awareness and judgment, resort safety guidelines, or professional emergency services.</p>
 
           <h3>15.3 Accuracy Disclaimer</h3>
           <p>We strive for accuracy but cannot guarantee GPS location precision in all conditions, real-time availability of resort data, completeness of trail information, weather forecast accuracy, or performance metric precision.</p>
@@ -611,7 +611,7 @@ export default function PrivacyPage() {
 
           <hr />
 
-          <p><strong>By using Skimate, you acknowledge that you have read, understood, and agree to this Privacy Policy.</strong></p>
+          <p><strong>By using Alpline, you acknowledge that you have read, understood, and agree to this Privacy Policy.</strong></p>
           <p>For the most current version of this policy, please check within the app or visit our website.</p>
           <p><strong>Effective Date:</strong> February 19, 2026 | <strong>Version:</strong> 1.0</p>
         </article>

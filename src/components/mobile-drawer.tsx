@@ -36,7 +36,7 @@ export function MobileDrawer() {
             >
               <Image
                 src="/appicon.png"
-                alt="Skimate Logo"
+                alt="Alpline Logo"
                 width={40}
                 height={40}
                 className="rounded-lg"

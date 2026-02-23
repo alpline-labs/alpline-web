@@ -37,4 +37,4 @@ jobs:
       - name: Run build (test)
         run: npm run build
         env:
-          NEXT_PUBLIC_APP_URL: https://skimate.app
+          NEXT_PUBLIC_APP_URL: https://getalpline.com

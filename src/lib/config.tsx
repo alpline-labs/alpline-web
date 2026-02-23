@@ -16,7 +16,7 @@ import {
 export const BLUR_FADE_DELAY = 0.15;
 
 export const siteConfig = {
-  name: "Skimate",
+  name: "Alpline",
   description: "Navigate smarter, ski better, connect deeper.",
   cta: "Download Now",
   url: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
@@ -32,11 +32,11 @@ export const siteConfig = {
     "Ski Social Network",
   ],
   links: {
-    email: "support@skimate.app",
-    twitter: "https://twitter.com/skimate",
-    discord: "https://discord.gg/skimate",
-    github: "https://github.com/skimate",
-    instagram: "https://instagram.com/skimate",
+    email: "support@getalpline.com",
+    twitter: "https://twitter.com/alpline",
+    discord: "https://discord.gg/alpline",
+    github: "https://github.com/alpline",
+    instagram: "https://instagram.com/alpline",
   },
   features: [
     {
@@ -80,7 +80,7 @@ export const siteConfig = {
     {
       title: "Audio Navigation That Just Works",
       description:
-        "Turn-by-turn audio guidance delivered right to your ears. No more stopping to check your phone - keep your eyes on the slopes while Skimate guides you to your destination. Works seamlessly with any helmet audio system or earbuds, completely offline.",
+        "Turn-by-turn audio guidance delivered right to your ears. No more stopping to check your phone - keep your eyes on the slopes while Alpline guides you to your destination. Works seamlessly with any helmet audio system or earbuds, completely offline.",
       imageSrc: "/app-screens/feature-navigation.png",
       direction: "rtl" as const,
     },
@@ -157,10 +157,10 @@ export const siteConfig = {
   ],
   faqs: [
     {
-      question: "How does Skimate work without internet connection?",
+      question: "How does Alpline work without internet connection?",
       answer: (
         <span>
-          Skimate downloads all mapping data to your phone so the app works offline.
+          Alpline downloads all mapping data to your phone so the app works offline.
           This gives you full routing and navigation functionality even when you don&apos;t have
           a data connection on the mountain. Your activity data will sync once you&apos;re connected again.
         </span>
@@ -170,7 +170,7 @@ export const siteConfig = {
       question: "How many resorts are supported?",
       answer: (
         <span>
-          Skimate currently supports over 2,000 resorts worldwide across North America, the European Alps,
+          Alpline currently supports over 2,000 resorts worldwide across North America, the European Alps,
           Japan, Australia, and New Zealand. We&apos;re constantly adding new resorts to our database.
         </span>
       ),
@@ -179,7 +179,7 @@ export const siteConfig = {
       question: "How does the audio navigation work?",
       answer: (
         <span>
-          Skimate provides turn-by-turn audio instructions that work seamlessly with any earbuds or helmet audio system.
+          Alpline provides turn-by-turn audio instructions that work seamlessly with any earbuds or helmet audio system.
           The audio guides you at every intersection without interrupting your music or calls. It works completely offline
           and uses advanced GPS tracking to keep you on the right path.
         </span>
@@ -196,20 +196,20 @@ export const siteConfig = {
       ),
     },
     {
-      question: "What kind of performance stats does Skimate track?",
+      question: "What kind of performance stats does Alpline track?",
       answer: (
         <span>
-          Skimate tracks comprehensive metrics including speed, vertical distance, total distance, run count,
+          Alpline tracks comprehensive metrics including speed, vertical distance, total distance, run count,
           heart rate (with connected devices), calories burned, and time on mountain. Compare your stats with
           friends on private leaderboards and track your progress season after season.
         </span>
       ),
     },
     {
-      question: "Is Skimate really free?",
+      question: "Is Alpline really free?",
       answer: (
         <span>
-          Yes! Skimate is completely free to download and use. All core features including audio navigation,
+          Yes! Alpline is completely free to download and use. All core features including audio navigation,
           3D maps, performance tracking, and social features are available at no cost. We believe everyone
           should have access to great navigation and safety tools on the mountain.
         </span>

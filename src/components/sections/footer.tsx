@@ -36,7 +36,7 @@ export function Footer() {
         <div className="flex items-center gap-x-2">
           <Image
             src="/appicon.png"
-            alt="Skimate Logo"
+            alt="Alpline Logo"
             width={24}
             height={24}
             className="rounded"

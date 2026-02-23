@@ -14,7 +14,7 @@ The landing page must load quickly, perform well on all devices, and maintain ex
 
 * **Framework**: Next.js 14.2.7 with App Router
 * **Deployment**: Vercel (automatic deployments)
-* **Domain**: skimate.app (configured in Vercel)
+* **Domain**: getalpline.com (configured in Vercel)
 * **Styling**: Tailwind CSS
 * **Components**: Radix UI, Framer Motion
 * **Maps**: Mapbox GL JS
@@ -53,12 +53,12 @@ The landing page must load quickly, perform well on all devices, and maintain ex
 **Location**: `vercel.json` (if needed) and Vercel dashboard
 
 * [ ] **Domain Configuration**: Configure in Vercel dashboard:
-  - Primary domain: `skimate.app`
-  - Redirect `www.skimate.app` to `skimate.app` (or vice versa)
+  - Primary domain: `getalpline.com`
+  - Redirect `www.getalpline.com` to `getalpline.com` (or vice versa)
   - Ensure SSL/TLS is enabled (automatic with Vercel)
 
 * [ ] **Environment Variables**: Store in Vercel dashboard:
-  - `NEXT_PUBLIC_APP_URL`: https://skimate.app
+  - `NEXT_PUBLIC_APP_URL`: https://getalpline.com
   - `NEXT_PUBLIC_MAPBOX_TOKEN`: Mapbox access token (if used)
   - Any API keys or secrets (never commit to repo)
 

@@ -3,7 +3,7 @@ import { Footer } from "@/components/sections/footer";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Terms of Service | Skimate",
+  title: "Terms of Service | Alpline",
 };
 
 export default function TermsPage() {
@@ -12,23 +12,23 @@ export default function TermsPage() {
       <Header />
       <div className="container py-24 md:py-32">
         <article className="prose prose-lg dark:prose-invert mx-auto max-w-4xl">
-          <h1>Skimate Terms of Service</h1>
+          <h1>Alpline Terms of Service</h1>
           <p><strong>Last Updated: February 19, 2026</strong></p>
 
           <h2>Agreement to Terms</h2>
           <p>
-            Welcome to Skimate. These Terms of Service (&ldquo;Terms&rdquo;) govern your access to and use of the Skimate mobile application, website, and related services (collectively, the &ldquo;Service&rdquo;). By downloading, installing, or using Skimate, you agree to be bound by these Terms.
+            Welcome to Alpline. These Terms of Service (&ldquo;Terms&rdquo;) govern your access to and use of the Alpline mobile application, website, and related services (collectively, the &ldquo;Service&rdquo;). By downloading, installing, or using Alpline, you agree to be bound by these Terms.
           </p>
           <p><strong>PLEASE READ THESE TERMS CAREFULLY BEFORE USING SKIMATE. IF YOU DO NOT AGREE TO THESE TERMS, DO NOT USE THE SERVICE.</strong></p>
           <p>
-            These Terms constitute a legally binding agreement between you and EXPOMATRIX PROPERTIES LIMITED (&ldquo;Skimate,&rdquo; &ldquo;we,&rdquo; &ldquo;us,&rdquo; or &ldquo;our&rdquo;), a company registered in England and Wales under Company Number 15639549, with its registered office at 23 Tiggall Close, Reading, RG6 7ES, United Kingdom.
+            These Terms constitute a legally binding agreement between you and EXPOMATRIX PROPERTIES LIMITED (&ldquo;Alpline,&rdquo; &ldquo;we,&rdquo; &ldquo;us,&rdquo; or &ldquo;our&rdquo;), a company registered in England and Wales under Company Number 15639549, with its registered office at 23 Tiggall Close, Reading, RG6 7ES, United Kingdom.
           </p>
 
           <h2>1. Acceptance and Eligibility</h2>
 
           <h3>1.1 Age Requirements</h3>
-          <p>You must be at least 13 years of age to use Skimate. If you are between 13 and 18 years of age (or the age of legal majority in your jurisdiction), you represent that your parent or legal guardian has reviewed and agreed to these Terms on your behalf.</p>
-          <p>Users under 18 should use Skimate under parental supervision. Parents are responsible for monitoring their children&apos;s use of the Service.</p>
+          <p>You must be at least 13 years of age to use Alpline. If you are between 13 and 18 years of age (or the age of legal majority in your jurisdiction), you represent that your parent or legal guardian has reviewed and agreed to these Terms on your behalf.</p>
+          <p>Users under 18 should use Alpline under parental supervision. Parents are responsible for monitoring their children&apos;s use of the Service.</p>
 
           <h3>1.2 Account Registration</h3>
           <p>To access certain features, you must create an account by providing:</p>
@@ -45,14 +45,14 @@ export default function TermsPage() {
           <p>We are not liable for losses resulting from unauthorized use of your account if you fail to maintain security.</p>
 
           <h3>1.4 Geographic Availability</h3>
-          <p>Skimate is available in supported ski resorts worldwide. Some features may be limited based on geographic location, local regulations, resort partnerships, network connectivity, or available mapping data.</p>
+          <p>Alpline is available in supported ski resorts worldwide. Some features may be limited based on geographic location, local regulations, resort partnerships, network connectivity, or available mapping data.</p>
 
           <h2>2. License and Service Access</h2>
 
           <h3>2.1 License Grant</h3>
-          <p>Subject to your compliance with these Terms, Skimate grants you a limited, non-exclusive, non-transferable, revocable license to:</p>
+          <p>Subject to your compliance with these Terms, Alpline grants you a limited, non-exclusive, non-transferable, revocable license to:</p>
           <ul>
-            <li>Download and install the Skimate mobile application on devices you own or control</li>
+            <li>Download and install the Alpline mobile application on devices you own or control</li>
             <li>Access and use the Service for personal, non-commercial purposes</li>
             <li>Create, store, and share content through the Service</li>
           </ul>
@@ -73,7 +73,7 @@ export default function TermsPage() {
           <h2>3. Acceptable Use Policy</h2>
 
           <h3>3.1 Permitted Uses</h3>
-          <p>You may use Skimate to navigate ski resorts safely, track your skiing performance, connect with friends and family, share your location with chosen contacts, access resort information and services, participate in social features and leaderboards, and export your personal activity data.</p>
+          <p>You may use Alpline to navigate ski resorts safely, track your skiing performance, connect with friends and family, share your location with chosen contacts, access resort information and services, participate in social features and leaderboards, and export your personal activity data.</p>
 
           <h3>3.2 Prohibited Uses</h3>
           <p>You agree NOT to:</p>
@@ -126,10 +126,10 @@ export default function TermsPage() {
           <h2>4. User-Generated Content</h2>
 
           <h3>4.1 Your Content</h3>
-          <p>You retain ownership of content you create and share through Skimate, including profile information and photos, snow condition reports and reviews, comments and social posts, uploaded photos and videos, and route and trip information.</p>
+          <p>You retain ownership of content you create and share through Alpline, including profile information and photos, snow condition reports and reviews, comments and social posts, uploaded photos and videos, and route and trip information.</p>
 
-          <h3>4.2 License to Skimate</h3>
-          <p>By posting content, you grant Skimate a worldwide, non-exclusive, royalty-free, transferable license to use, display, and distribute your content within the Service, modify and adapt content for technical requirements, create derivative works for Service improvement, sublicense to service providers necessary for operation, and display content to other users as permitted by your privacy settings.</p>
+          <h3>4.2 License to Alpline</h3>
+          <p>By posting content, you grant Alpline a worldwide, non-exclusive, royalty-free, transferable license to use, display, and distribute your content within the Service, modify and adapt content for technical requirements, create derivative works for Service improvement, sublicense to service providers necessary for operation, and display content to other users as permitted by your privacy settings.</p>
           <p>This license continues even after you delete content or terminate your account for content that has been shared or integrated into the Service, but we will honor deletion requests for standalone content.</p>
 
           <h3>4.3 Content Responsibility</h3>
@@ -178,7 +178,7 @@ export default function TermsPage() {
           <h2>7. Third-Party Services and Integrations</h2>
 
           <h3>7.1 Resort Partners</h3>
-          <p>Skimate integrates with ski resort systems to provide live lift and trail status, facility information, booking services, and crowd management data. Resort partnerships are subject to availability and participation, third-party terms and policies, changes or termination without notice, and potential additional fees or requirements.</p>
+          <p>Alpline integrates with ski resort systems to provide live lift and trail status, facility information, booking services, and crowd management data. Resort partnerships are subject to availability and participation, third-party terms and policies, changes or termination without notice, and potential additional fees or requirements.</p>
 
           <h3>7.2 Mapping and Navigation</h3>
           <p>We use third-party mapping services including MapTiler for map rendering, Valhalla for routing, and OpenStreetMap for base data. These services operate under their own terms and licenses, may have limitations or inaccuracies, can change or become unavailable, and are provided &ldquo;as is&rdquo; without warranty.</p>
@@ -212,11 +212,11 @@ export default function TermsPage() {
 
           <h2>9. Intellectual Property Rights</h2>
 
-          <h3>9.1 Skimate&apos;s Rights</h3>
-          <p>All intellectual property in Skimate is owned by us or our licensors, including software code and architecture, designs, graphics, and user interface, logos, trademarks, and branding, algorithms and routing logic, documentation and content, and database and data structures. Protected by copyright, trademark, patent, and other intellectual property laws.</p>
+          <h3>9.1 Alpline&apos;s Rights</h3>
+          <p>All intellectual property in Alpline is owned by us or our licensors, including software code and architecture, designs, graphics, and user interface, logos, trademarks, and branding, algorithms and routing logic, documentation and content, and database and data structures. Protected by copyright, trademark, patent, and other intellectual property laws.</p>
 
           <h3>9.2 Trademarks</h3>
-          <p>&ldquo;Skimate&rdquo; and related marks are trademarks of EXPOMATRIX PROPERTIES LIMITED. You may not use our trademarks without written permission.</p>
+          <p>&ldquo;Alpline&rdquo; and related marks are trademarks of EXPOMATRIX PROPERTIES LIMITED. You may not use our trademarks without written permission.</p>
 
           <h3>9.3 Restrictions</h3>
           <p>You may not copy or reproduce the Service or software, create derivative works, distribute or sell our intellectual property, remove proprietary notices or labels, use our trademarks without permission, or claim ownership of our intellectual property.</p>
@@ -225,7 +225,7 @@ export default function TermsPage() {
           <p>If you provide feedback or suggestions, we may use them without obligation to you, no compensation or attribution required, you grant us unlimited rights to implement, and feedback becomes our property.</p>
 
           <h3>9.5 Copyright Infringement</h3>
-          <p>We respect intellectual property rights. If you believe content infringes your copyright, contact our Copyright Agent at <strong>copyright@skimate.app</strong>.</p>
+          <p>We respect intellectual property rights. If you believe content infringes your copyright, contact our Copyright Agent at <strong>copyright@getalpline.com</strong>.</p>
 
           <h3>9.6 Repeat Infringer Policy</h3>
           <p>Accounts of repeat copyright infringers will be terminated.</p>
@@ -245,7 +245,7 @@ export default function TermsPage() {
           <p>The Service may be subject to limitations and delays inherent to internet and mobile networks, GPS signal interference or inaccuracy, device compatibility issues, battery drain and performance impacts, security vulnerabilities, and third-party service dependencies.</p>
 
           <h3>10.5 No Professional Advice</h3>
-          <p>Skimate does not provide professional skiing instruction, medical advice or diagnosis, emergency services, legal advice, or professional route planning. Information is for general purposes only.</p>
+          <p>Alpline does not provide professional skiing instruction, medical advice or diagnosis, emergency services, legal advice, or professional route planning. Information is for general purposes only.</p>
 
           <h3>10.6 Third-Party Disclaimer</h3>
           <p>We are not responsible for third-party services, products, or content, websites or applications, resort operations or safety, emergency response services, or mapping or weather data providers.</p>
@@ -259,7 +259,7 @@ export default function TermsPage() {
           <p>We are not liable for injuries or death resulting from skiing activities, accidents or collisions, getting lost or disoriented, avalanches or natural disasters, equipment failure, decisions made based on app information, emergency response failures or delays, or third-party acts or omissions.</p>
 
           <h3>11.3 Maximum Liability</h3>
-          <p>Our total liability for any claims arising from or related to the Service is limited to the greater of $100 USD or amounts you paid to Skimate in the 12 months preceding the claim. This limitation applies regardless of the legal theory of liability.</p>
+          <p>Our total liability for any claims arising from or related to the Service is limited to the greater of $100 USD or amounts you paid to Alpline in the 12 months preceding the claim. This limitation applies regardless of the legal theory of liability.</p>
 
           <h3>11.4 Essential Purpose</h3>
           <p>These limitations apply even if any limited remedy fails of its essential purpose.</p>
@@ -270,7 +270,7 @@ export default function TermsPage() {
           <h2>12. Indemnification</h2>
 
           <h3>12.1 Your Obligation to Indemnify</h3>
-          <p>You agree to indemnify, defend, and hold harmless Skimate, its affiliates, officers, directors, employees, agents, licensors, and service providers from and against all claims, liabilities, damages, losses, costs, and expenses arising from or related to your use or misuse of the Service, your violation of these Terms, any law or regulation, or third-party rights, content you post or share, your skiing activities and decisions, injuries or damages you cause to others, or your negligence or willful misconduct.</p>
+          <p>You agree to indemnify, defend, and hold harmless Alpline, its affiliates, officers, directors, employees, agents, licensors, and service providers from and against all claims, liabilities, damages, losses, costs, and expenses arising from or related to your use or misuse of the Service, your violation of these Terms, any law or regulation, or third-party rights, content you post or share, your skiing activities and decisions, injuries or damages you cause to others, or your negligence or willful misconduct.</p>
 
           <h3>12.2 Process</h3>
           <p>If we seek indemnification: we will notify you of the claim, you will have control of defense (with our approval of counsel), we may participate in defense at our expense, you may not settle without our written consent, and you will not admit liability on our behalf.</p>
@@ -278,7 +278,7 @@ export default function TermsPage() {
           <h2>13. Dispute Resolution</h2>
 
           <h3>13.1 Informal Resolution</h3>
-          <p>Before filing a claim, you agree to contact us at legal@skimate.app, describe the dispute in detail, provide your desired resolution, and allow 60 days for informal resolution. Most disputes can be resolved this way.</p>
+          <p>Before filing a claim, you agree to contact us at legal@getalpline.com, describe the dispute in detail, provide your desired resolution, and allow 60 days for informal resolution. Most disputes can be resolved this way.</p>
 
           <h3>13.2 Governing Law</h3>
           <p>These Terms are governed by and construed in accordance with the laws of England and Wales, without regard to conflict of law principles. The courts of England and Wales shall have exclusive jurisdiction to settle any dispute or claim arising out of or in connection with these Terms.</p>
@@ -288,11 +288,11 @@ export default function TermsPage() {
           <p><strong>Alternative Dispute Resolution:</strong> You may also have the right to refer disputes to alternative dispute resolution. EU users may use the European Commission&apos;s Online Dispute Resolution platform. UK users may access approved alternative dispute resolution providers.</p>
 
           <h3>13.4 Arbitration for Non-UK/EU Users</h3>
-          <p>For users outside the UK and EU, you and Skimate agree that disputes may be resolved through binding arbitration administered by an appropriate arbitration body in your jurisdiction, with a single arbitrator appointed. Each party pays own attorneys&apos; fees unless awarded by arbitrator. The arbitrator&apos;s decision is final and binding.</p>
+          <p>For users outside the UK and EU, you and Alpline agree that disputes may be resolved through binding arbitration administered by an appropriate arbitration body in your jurisdiction, with a single arbitrator appointed. Each party pays own attorneys&apos; fees unless awarded by arbitrator. The arbitrator&apos;s decision is final and binding.</p>
           <p><strong>Exceptions:</strong> Small claims court actions (within jurisdictional limits), intellectual property disputes, and claims for injunctive relief.</p>
 
           <h3>13.5 Class Action and Collective Proceedings</h3>
-          <p><strong>For Non-UK/EU Users:</strong> You and Skimate waive the right to participate in class actions, class arbitrations, or representative actions. All disputes must be brought in your individual capacity.</p>
+          <p><strong>For Non-UK/EU Users:</strong> You and Alpline waive the right to participate in class actions, class arbitrations, or representative actions. All disputes must be brought in your individual capacity.</p>
           <p><strong>For UK/EU Users:</strong> This waiver does not apply. You retain all rights to participate in collective proceedings as permitted under UK and EU law.</p>
 
           <h3>13.6 Opt-Out Right (Non-UK/EU Users Only)</h3>
@@ -304,7 +304,7 @@ export default function TermsPage() {
           <h2>14. Termination</h2>
 
           <h3>14.1 Termination by You</h3>
-          <p>You may terminate your account at any time by deleting your account in app settings, contacting support@skimate.app, stopping use of the Service, or uninstalling the application. Termination does not cancel paid subscriptions; you must cancel separately through your App Store or Google Play account.</p>
+          <p>You may terminate your account at any time by deleting your account in app settings, contacting support@getalpline.com, stopping use of the Service, or uninstalling the application. Termination does not cancel paid subscriptions; you must cancel separately through your App Store or Google Play account.</p>
 
           <h3>14.2 Termination by Us</h3>
           <p>We may suspend or terminate your account for violation of these Terms, for fraudulent or illegal activity, to protect other users or the Service, for extended periods of inactivity, or at our discretion with or without notice.</p>
@@ -324,7 +324,7 @@ export default function TermsPage() {
           <p><strong>Distance Selling:</strong> You have certain cancellation rights for online purchases under the Consumer Contracts Regulations 2013. These rights apply to in-app purchases where applicable.</p>
 
           <h3>15.1 Entire Agreement</h3>
-          <p>These Terms, together with our Privacy Policy, constitute the entire agreement between you and Skimate regarding the Service and supersede all prior agreements.</p>
+          <p>These Terms, together with our Privacy Policy, constitute the entire agreement between you and Alpline regarding the Service and supersede all prior agreements.</p>
 
           <h3>15.2 Modifications to Terms</h3>
           <p>We may modify these Terms at any time. Material changes: Notice via email or in-app notification at least 30 days in advance. Minor changes: Posted with updated &ldquo;Last Updated&rdquo; date. Continued use after changes constitutes acceptance. If you don&apos;t agree to changes, stop using the Service.</p>
@@ -356,20 +356,20 @@ export default function TermsPage() {
           <h2>16. App Store Specific Terms</h2>
 
           <h3>16.1 Apple App Store</h3>
-          <p>If you download from the Apple App Store: These Terms are between you and Skimate, not Apple. Apple has no obligation to provide support. Apple is not responsible for the Service. Apple is a third-party beneficiary with enforcement rights.</p>
+          <p>If you download from the Apple App Store: These Terms are between you and Alpline, not Apple. Apple has no obligation to provide support. Apple is not responsible for the Service. Apple is a third-party beneficiary with enforcement rights.</p>
 
           <h3>16.2 Google Play Store</h3>
-          <p>If you download from Google Play: These Terms are between you and Skimate, not Google. Google has no obligation to provide support. Google is not responsible for the Service. You agree to Google Play Terms of Service.</p>
+          <p>If you download from Google Play: These Terms are between you and Alpline, not Google. Google has no obligation to provide support. Google is not responsible for the Service. You agree to Google Play Terms of Service.</p>
 
           <h2>17. Contact Information</h2>
 
           <h3>17.1 Customer Support</h3>
-          <p><strong>Email:</strong> support@skimate.app</p>
+          <p><strong>Email:</strong> support@getalpline.com</p>
           <p><strong>In-App:</strong> Settings &gt; Help &amp; Support</p>
           <p><strong>Response Time:</strong> We aim to respond within 2 business days</p>
 
           <h3>17.2 Legal Notices</h3>
-          <p><strong>Email:</strong> legal@skimate.app</p>
+          <p><strong>Email:</strong> legal@getalpline.com</p>
           <p>
             <strong>Mail:</strong><br />
             EXPOMATRIX PROPERTIES LIMITED<br />
@@ -382,7 +382,7 @@ export default function TermsPage() {
           <h3>17.3 Business Information</h3>
           <p>
             <strong>Company Name:</strong> EXPOMATRIX PROPERTIES LIMITED<br />
-            <strong>Trading As:</strong> Skimate<br />
+            <strong>Trading As:</strong> Alpline<br />
             <strong>Company Number:</strong> 15639549<br />
             <strong>Registered in:</strong> England and Wales<br />
             <strong>Registered Office:</strong> 23 Tiggall Close, Reading, RG6 7ES, United Kingdom
@@ -394,9 +394,9 @@ export default function TermsPage() {
             <li>You have read and understood these Terms</li>
             <li>You agree to be bound by these Terms</li>
             <li>You understand skiing involves inherent risks</li>
-            <li>Skimate is a tool, not a substitute for safety equipment, training, or judgment</li>
+            <li>Alpline is a tool, not a substitute for safety equipment, training, or judgment</li>
             <li>You are solely responsible for your safety and decisions</li>
-            <li>You release Skimate from liability for injuries or damages arising from skiing</li>
+            <li>You release Alpline from liability for injuries or damages arising from skiing</li>
             <li>You will use the Service responsibly and lawfully</li>
             <li>You have the authority to enter into this agreement</li>
           </ol>
@@ -406,7 +406,7 @@ export default function TermsPage() {
 
           <p><strong>These Terms of Service are effective as of February 19, 2026 and version 1.0.</strong></p>
           <p>For the most current version, please check within the app or visit our website.</p>
-          <p>Thank you for using Skimate. Ski safe!</p>
+          <p>Thank you for using Alpline. Ski safe!</p>
         </article>
       </div>
       <Footer />

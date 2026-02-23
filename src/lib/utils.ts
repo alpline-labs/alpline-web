@@ -50,7 +50,7 @@ export function constructMetadata({
       title,
       description,
       images: [image],
-      creator: "@skimate",
+      creator: "@alpline",
     },
     icons: {
       icon: "/favicon.ico",
