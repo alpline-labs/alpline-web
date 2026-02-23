@@ -17,7 +17,7 @@ export const BLUR_FADE_DELAY = 0.15;
 
 export const siteConfig = {
   name: "Alpline",
-  description: "Navigate smarter, ski better, connect deeper.",
+  description: "Navigate smarter, ski better, find your crew.",
   cta: "Download Now",
   url: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
   keywords: [
