@@ -63,7 +63,7 @@ export function Header() {
         >
           <Image
             src="/appicon.png"
-            alt="Skimate Logo"
+            alt="Alpline Logo"
             width={32}
             height={32}
             className="rounded-lg"

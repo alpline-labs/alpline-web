@@ -37,7 +37,7 @@ export function Hero() {
             <div className="h-20 w-20 flex items-center justify-center mx-auto">
               <Image
                 src="/appicon.png"
-                alt="Skimate Logo"
+                alt="Alpline Logo"
                 width={80}
                 height={80}
                 className="rounded-2xl shadow-2xl"

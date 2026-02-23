@@ -1,25 +1,25 @@
 # Vercel Deployment Setup Guide
 
-This guide will help you connect your SkiApp web landing page to Vercel and configure the `skimate.app` domain.
+This guide will help you connect your SkiApp web landing page to Vercel and configure the `getalpline.com` domain.
 
 ## Prerequisites
 
 1. A Vercel account (sign up at https://vercel.com)
-2. Access to your `skimate.app` domain DNS settings
+2. Access to your `getalpline.com` domain DNS settings
 3. GitHub repository connected to Vercel
 
 ## Step 1: Connect Repository to Vercel
 
 1. Go to [Vercel Dashboard](https://vercel.com/dashboard)
 2. Click "Add New..." → "Project"
-3. Import your `skimate-web` repository from GitHub
+3. Import your `alpline-web` repository from GitHub
 4. Vercel will auto-detect Next.js framework
 
 ## Step 2: Configure Build Settings
 
 Vercel should auto-detect Next.js, but verify:
 - **Framework Preset**: Next.js
-- **Root Directory**: `./` (or `skimate-web` if in monorepo)
+- **Root Directory**: `./` (or `alpline-web` if in monorepo)
 - **Build Command**: `npm run build` (default)
 - **Output Directory**: `.next` (default)
 - **Install Command**: `npm ci` (recommended)
@@ -29,7 +29,7 @@ Vercel should auto-detect Next.js, but verify:
 In Vercel project settings → Environment Variables, add:
 
 ```
-NEXT_PUBLIC_APP_URL=https://skimate.app
+NEXT_PUBLIC_APP_URL=https://getalpline.com
 ```
 
 If using Mapbox:
@@ -37,27 +37,27 @@ If using Mapbox:
 NEXT_PUBLIC_MAPBOX_TOKEN=your_mapbox_token_here
 ```
 
-## Step 4: Configure Domain (skimate.app)
+## Step 4: Configure Domain (getalpline.com)
 
 ### Option A: Add Domain in Vercel Dashboard
 
 1. Go to Project Settings → Domains
 2. Click "Add Domain"
-3. Enter `skimate.app`
+3. Enter `getalpline.com`
 4. Vercel will provide DNS records to add
 
 ### Option B: Configure DNS Records
 
 Add these DNS records to your domain registrar:
 
-**For skimate.app (Apex Domain):**
+**For getalpline.com (Apex Domain):**
 ```
 Type: A
 Name: @
 Value: 76.76.21.21
 ```
 
-**For www.skimate.app (Subdomain):**
+**For www.getalpline.com (Subdomain):**
 ```
 Type: CNAME
 Name: www
@@ -73,7 +73,7 @@ ns2.vercel-dns.com
 ### Option C: Redirect www to non-www (or vice versa)
 
 In Vercel project settings → Domains:
-- Add both `skimate.app` and `www.skimate.app`
+- Add both `getalpline.com` and `www.getalpline.com`
 - Set one as primary and redirect the other
 
 ## Step 5: Configure GitHub Secrets
@@ -106,16 +106,16 @@ In Vercel project settings, enable:
 
 1. Push to `main` branch - Vercel will auto-deploy
 2. Check deployment in Vercel dashboard
-3. Visit https://skimate.app to verify
+3. Visit https://getalpline.com to verify
 4. Check SSL certificate (should be automatic)
 
 ## Step 8: Verify Configuration
 
 After deployment, verify:
 
-- [ ] Site loads at https://skimate.app
+- [ ] Site loads at https://getalpline.com
 - [ ] SSL certificate is valid (green lock icon)
-- [ ] www.skimate.app redirects to skimate.app (or vice versa)
+- [ ] www.getalpline.com redirects to getalpline.com (or vice versa)
 - [ ] All environment variables are set
 - [ ] Analytics and Speed Insights are working
 - [ ] Preview deployments work for PRs

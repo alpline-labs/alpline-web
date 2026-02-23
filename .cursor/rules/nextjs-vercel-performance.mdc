@@ -43,12 +43,12 @@ To complete your automation setup for **SkiApp Web Landing Page**, these `.mdc` 
 * **Sitemap**: Ensure `sitemap.ts` is properly configured and generates XML sitemap automatically.
 * **Robots.txt**: Create `robots.txt` in `public/` directory or use `app/robots.ts` for dynamic generation.
 
-## Domain Configuration (skimate.app)
+## Domain Configuration (getalpline.com)
 
-* **Canonical URLs**: Always use `https://skimate.app` as canonical URL. Configure in metadata and ensure all internal links use absolute URLs in production.
+* **Canonical URLs**: Always use `https://getalpline.com` as canonical URL. Configure in metadata and ensure all internal links use absolute URLs in production.
 * **SSL/TLS**: Vercel automatically provides SSL certificates. Ensure domain is properly configured in Vercel dashboard.
 * **Redirects**: Configure redirects in `next.config.mjs` for www to non-www (or vice versa) and HTTP to HTTPS.
-* **Custom Domain**: Ensure `skimate.app` and `www.skimate.app` are both configured in Vercel project settings.
+* **Custom Domain**: Ensure `getalpline.com` and `www.getalpline.com` are both configured in Vercel project settings.
 
 ## Mapbox Integration
 

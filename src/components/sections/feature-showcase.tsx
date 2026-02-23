@@ -17,13 +17,13 @@ const features: Feature[] = [
   {
     title: "Audio Navigation That Just Works",
     description:
-      "Turn-by-turn audio guidance delivered right to your ears without interrupting your music or calls. Keep your eyes on the slopes while Skimate guides you to your destination.",
+      "Turn-by-turn audio guidance delivered right to your ears without interrupting your music or calls. Keep your eyes on the slopes while Alpline guides you to your destination.",
     imageSrc: "/app-screens/feature-navigation.png",
     imageAlt: "Turn-by-turn audio navigation",
     benefits: [
       "Works with any helmet audio system or earbuds",
       "Completely offline - no internet required",
-      "Voice commands with \"Hey Skimate\"",
+      "Voice commands with \"Hey Alpline\"",
       "Never stop to check your phone again",
     ],
   },
@@ -100,7 +100,7 @@ export function FeatureShowcase() {
             Everything You Need on the Mountain
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Skimate combines navigation, tracking, and social features into one powerful app
+            Alpline combines navigation, tracking, and social features into one powerful app
           </p>
         </div>
 

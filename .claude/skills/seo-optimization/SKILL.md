@@ -16,7 +16,7 @@ The landing page must be optimized for search engines while maintaining excellen
 * **Metadata**: Next.js Metadata API
 * **Structured Data**: JSON-LD schemas
 * **Analytics**: Vercel Analytics, potential Google Analytics
-* **Domain**: skimate.app (primary domain)
+* **Domain**: getalpline.com (primary domain)
 
 ## Implementation Standards
 
@@ -30,7 +30,7 @@ The landing page must be optimized for search engines while maintaining excellen
   - `keywords`: Array of relevant keywords from `siteConfig.keywords`
   - `openGraph`: Complete OG tags (title, description, image, url, type)
   - `twitter`: Twitter card metadata (card type, title, description, image)
-  - `alternates.canonical`: Always use `https://skimate.app` as canonical URL
+  - `alternates.canonical`: Always use `https://getalpline.com` as canonical URL
 
 * [ ] **Structured Data**: Implement JSON-LD in `layout.tsx` or page components:
   - Organization schema (name, logo, url, contact info)
