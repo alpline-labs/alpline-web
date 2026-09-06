@@ -1,5 +1,8 @@
-export const MAPTILER_API_KEY = process.env.MAPTILER_API_KEY || '';
-export const API_BASE_URL = '';
+// MapTiler key: must be NEXT_PUBLIC_-prefixed to reach the browser bundle
+// (this module is imported from "use client" components). The un-prefixed
+// fallback only works server-side and is kept for backwards compatibility.
+export const MAPTILER_API_KEY =
+    process.env.NEXT_PUBLIC_MAPTILER_API_KEY || process.env.MAPTILER_API_KEY || '';
 
 export const RESORTS = {
     zermatt: {
@@ -24,17 +27,3 @@ export const RESORTS = {
         bbox: [9.8, 46.7, 10.0, 46.9] as [number, number, number, number]
     }
 };
-
-export const ROUTE_COLORS = {
-    primary: '#1a73e8',
-    alternative1: '#34a853',
-    alternative2: '#fbbc04',
-    alternative3: '#ea4335'
-};
-
-export const SKILL_LEVELS = [
-    { value: 1, label: '🟢 Beginner (Green)', color: '#4CAF50' },
-    { value: 2, label: '🔵 Intermediate (Blue)', color: '#2196F3' },
-    { value: 3, label: '🔴 Advanced (Red)', color: '#F44336' },
-    { value: 4, label: '⚫ Expert (Black)', color: '#000000' }
-];

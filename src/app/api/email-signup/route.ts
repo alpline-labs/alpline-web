@@ -1,16 +1,25 @@
-import { neon } from "@neondatabase/serverless";
+import { createClient } from "@supabase/supabase-js";
 import { NextRequest, NextResponse } from "next/server";
 
-function getSQL() {
-  if (!process.env.DATABASE_URL) {
-    throw new Error("DATABASE_URL environment variable is not set");
+// Lazily create the Supabase client so the route can be built/imported
+// without the env vars present. Server-only: the secret key bypasses RLS
+// and must never be exposed to the browser (no NEXT_PUBLIC_ prefix).
+function getSupabase() {
+  const url = process.env.SUPABASE_URL;
+  const secretKey = process.env.SUPABASE_SECRET_KEY;
+  if (!url || !secretKey) {
+    throw new Error(
+      "SUPABASE_URL and SUPABASE_SECRET_KEY environment variables are not set",
+    );
   }
-  return neon(process.env.DATABASE_URL);
+  return createClient(url, secretKey, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
 }
 
 export async function POST(req: NextRequest) {
   try {
-    const sql = getSQL();
+    const supabase = getSupabase();
     const { email } = await req.json();
 
     // Validate email
@@ -31,12 +40,21 @@ export async function POST(req: NextRequest) {
     }
 
     // Insert email into database
-    // Using ON CONFLICT to prevent duplicate emails
-    await sql`
-      INSERT INTO email_signups (email, created_at)
-      VALUES (${email.toLowerCase()}, NOW())
-      ON CONFLICT (email) DO NOTHING
-    `;
+    const { error } = await supabase
+      .from("email_signups")
+      .insert({ email: email.toLowerCase() });
+
+    if (error) {
+      // Duplicate email: treat as success, matching the previous
+      // ON CONFLICT DO NOTHING behavior (no signal to the visitor).
+      if (error.code === "23505") {
+        return NextResponse.json(
+          { success: true, message: "Email added successfully" },
+          { status: 200 },
+        );
+      }
+      throw error;
+    }
 
     return NextResponse.json(
       { success: true, message: "Email added successfully" },
@@ -44,14 +62,6 @@ export async function POST(req: NextRequest) {
     );
   } catch (error: any) {
     console.error("Email signup error:", error);
-
-    // Handle unique constraint violation (duplicate email)
-    if (error.code === "23505") {
-      return NextResponse.json(
-        { success: false, error: "This email is already registered" },
-        { status: 409 },
-      );
-    }
 
     return NextResponse.json(
       { success: false, error: "Failed to add email. Please try again." },

@@ -1,81 +1,97 @@
 # Email Signup Setup Guide
 
-This guide explains how to set up the email signup form with Neon database on Vercel.
+This guide explains how to set up the email signup form with Supabase.
 
 ## Prerequisites
 
-- A Vercel account
-- A Neon database (free tier available)
+- A Supabase project (free tier is fine) — this repo points at
+  `https://kjnuzuagvjkwbsyxmqep.supabase.co`
+- A Vercel account (for deployment)
 
 ## Setup Steps
 
-### 1. Create a Neon Database
+### 1. Create the Table
 
-1. Go to [Vercel Dashboard](https://vercel.com/dashboard)
-2. Navigate to your project's **Storage** tab
-3. Click **Create Database** and select **Neon**
-4. Follow the prompts to create your database
-5. Copy the connection string (it will be automatically added as `DATABASE_URL` environment variable)
+1. Open the [Supabase dashboard](https://supabase.com/dashboard) and select the project
+2. Go to **SQL Editor**
+3. Paste and run the contents of `schema.sql`:
 
-Alternatively, you can create a Neon database directly at [neon.tech](https://neon.tech) and add the connection string manually.
-
-### 2. Run the Database Schema
-
-1. In your Vercel project dashboard, go to **Storage** → **Neon** → **Data**
-2. Open the SQL Editor
-3. Copy and paste the contents of `schema.sql`:
    ```sql
    CREATE TABLE IF NOT EXISTS email_signups (
-     id SERIAL PRIMARY KEY,
+     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
      email VARCHAR(255) UNIQUE NOT NULL,
      created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
    );
 
-   CREATE INDEX IF NOT EXISTS idx_email_signups_email ON email_signups(email);
    CREATE INDEX IF NOT EXISTS idx_email_signups_created_at ON email_signups(created_at DESC);
+
+   ALTER TABLE email_signups ENABLE ROW LEVEL SECURITY;
    ```
-4. Execute the SQL to create the table
 
-### 3. Environment Variables
+   (Alternatively apply it as a CLI migration: `supabase migration new email_signups`,
+   paste the SQL into the generated file, then `supabase db push`.)
 
-The `DATABASE_URL` environment variable should be automatically set by Vercel when you create the Neon database through the Vercel dashboard.
+**Security model**: RLS is enabled with **no policies on purpose**. The API route
+uses the secret (service-role) key, which bypasses RLS; anonymous and
+authenticated clients get no access to the table at all. Do not add policies
+unless you deliberately want client-side access.
 
-**Important**: Use the **pooled connection string** (`DATABASE_URL`) - this is the one that ends with `-pooler` in the hostname. This is recommended for serverless functions and handles connection pooling automatically.
+### 2. Environment Variables
 
-If you created the database manually:
-1. Go to **Settings** → **Environment Variables**
-2. Add `DATABASE_URL` with your Neon pooled connection string (the one with `-pooler` in the hostname)
-3. Make sure to add it for all environments (Production, Preview, Development)
+The route reads two server-only variables (no `NEXT_PUBLIC_` prefix — the secret
+key must never reach the browser):
 
-Example format:
 ```
-DATABASE_URL=postgresql://neondb_owner:password@ep-xxx-pooler.c-4.us-east-1.aws.neon.tech/neondb?sslmode=require
+SUPABASE_URL=https://kjnuzuagvjkwbsyxmqep.supabase.co
+SUPABASE_SECRET_KEY=<secret key>
 ```
 
-### 4. Deploy
+Get the secret key from the Supabase dashboard: **Project Settings → API keys →
+secret key**.
 
-After setting up the database and environment variables:
+On Vercel:
+
+1. Go to **Settings → Environment Variables**
+2. Add `SUPABASE_URL` and `SUPABASE_SECRET_KEY`
+3. Enable them for **Production**, **Preview**, and **Development**
+
+### 3. Deploy
+
 1. Push your changes to GitHub
-2. Vercel will automatically deploy
-3. The email signup form will be available on your site
+2. Vercel deploys automatically
+3. The email signup form will be available on the site
 
 ## Testing Locally
 
-For local development:
-
-1. Copy `.env.example` to `.env.local`
-2. Add your `DATABASE_URL` to `.env.local`
+1. Copy `.env.example` to `.env.local` (or edit the existing `.env.local`)
+2. Fill in `SUPABASE_SECRET_KEY`
 3. Run `npm run dev`
-4. The form should work with your Neon database
+4. Submit the form on the landing page
+
+## Migrating Existing Rows from Neon
+
+The old Neon database still holds signups collected before the cutover. To move
+them, dump from Neon and load into Supabase (both connection strings are
+standard Postgres URLs — Supabase's is under **Project Settings → Database →
+Connection string**):
+
+```bash
+psql "$NEON_DATABASE_URL" -c "\copy (SELECT email, created_at FROM email_signups ORDER BY id) TO '/tmp/signups.csv' CSV" \
+  && psql "$SUPABASE_DB_URL" -c "\copy email_signups (email, created_at) FROM '/tmp/signups.csv' CSV"
+```
+
+Duplicates will fail the whole `\copy` because of the unique constraint; if the
+Supabase table already has rows, load into a temp table and
+`INSERT ... SELECT ... ON CONFLICT (email) DO NOTHING` instead.
 
 ## Viewing Signups
 
-You can view collected emails in:
-- **Vercel Dashboard** → **Storage** → **Neon** → **Data** → `email_signups` table
-- Or connect any PostgreSQL client using your `DATABASE_URL`
+- **Supabase dashboard** → **Table Editor** → `email_signups`
+- Or connect any PostgreSQL client using the Supabase database connection string
 
 ## Notes
 
-- The form prevents duplicate emails using a unique constraint
+- The form prevents duplicate emails using a unique constraint (the API returns
+  409 for duplicates)
 - All emails are stored in lowercase for consistency
 - The `created_at` timestamp is automatically set when an email is added
