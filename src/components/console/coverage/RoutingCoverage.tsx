@@ -34,6 +34,7 @@ const TYPE_ORDER: CoverageFindingType[] = [
   "unconnected_terminal",
   "isolated_component",
   "missing_reference_lift",
+  "sector_attribution",
   "missing_difficulty",
 ];
 
@@ -787,6 +788,7 @@ function GradeLegend({ members }: { members: CoverageMemberStats[] }) {
 
 const SOURCE_TITLE: Record<ReferenceComparison["source"], string> = {
   liftie: "Operator feed (liftie)",
+  operator_map: "Operator piste maps",
   skimap: "Skimap entry",
   declared: "Official figures",
 };

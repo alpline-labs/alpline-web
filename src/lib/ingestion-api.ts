@@ -566,6 +566,7 @@ export const GateKey = z.enum([
   "disconnected_terminal",
   "isolated_component",
   "reference_delta",
+  "sector_attribution",
   "missing_difficulty",
 ]);
 export type GateKey = z.infer<typeof GateKey>;
@@ -870,7 +871,8 @@ export const CoverageFindingType = z.enum([
   "unconnected_terminal",   // a lift terminal not joined into the routable graph
   "isolated_component",     // a piste cluster ≥ the km floor with no lift edge
   "missing_difficulty",     // piste way with piste:type but no difficulty tag
-  "missing_reference_lift", // liftie (operator feed) lists a lift OSM extraction lacks
+  "missing_reference_lift", // an operator source (liftie feed, or a sourced operator piste map) lists a lift OSM lacks
+  "sector_attribution",     // lift/piste the operator-map sector inventories cannot place (§3.2)
 ]);
 export type CoverageFindingType = z.infer<typeof CoverageFindingType>;
 
@@ -917,7 +919,7 @@ export type CoverageMemberStats = z.infer<typeof CoverageMemberStats>;
  * with no OSM counterpart is the single best "we missed one" signal we have.
  */
 export const ReferenceComparison = z.object({
-  source: z.enum(["liftie", "skimap", "declared"]),
+  source: z.enum(["liftie", "operator_map", "skimap", "declared"]),
   status: z.enum(["ok", "unavailable"]),
   /** Why unavailable, or what was compared. "Feed live but no lift list published (out of season)" is a real state — render it, don't hide it. */
   detail: z.string(),
