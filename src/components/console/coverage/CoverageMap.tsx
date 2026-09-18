@@ -16,6 +16,7 @@ const FOCUS = "coverage-focus";
  */
 export const FINDING_COLOR: Record<CoverageFindingType, string> = {
   unconnected_terminal: "#ff3b30",
+  lift_island: "#af52de",
   isolated_component: "#ff9500",
   missing_reference_lift: "#af52de",
   sector_attribution: "#007aff",
@@ -24,6 +25,7 @@ export const FINDING_COLOR: Record<CoverageFindingType, string> = {
 
 export const FINDING_LABEL: Record<CoverageFindingType, string> = {
   unconnected_terminal: "Unconnected terminal",
+  lift_island: "Lift island",
   isolated_component: "Isolated component",
   missing_reference_lift: "Missing reference lift",
   sector_attribution: "Sector attribution",

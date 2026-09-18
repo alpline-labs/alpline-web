@@ -1246,8 +1246,9 @@ export const COVERAGE_FINDING_CAP = 60;
  *
  * GAPS 11, decided and implemented backend-side on 2026-09-11: only verdicts
  * that are claims about the graph itself settle a gate — `local_override`
- * (we repaired it) and `accept_gap` (it is correct as-is). `fix_upstream`
- * and `retry` mean "still broken, the fix is elsewhere", so the gate stays
+ * (we repaired it) and `accept_gap` (it is correct as-is). `fix_upstream`,
+ * `fix_pipeline` and `retry` all mean "still broken, the fix is elsewhere" —
+ * they differ only in WHOSE bug it is — so the gate stays
  * failing until a re-extract clears the finding or the analyst waives the
  * gate. The mock mirrors the shipped rule, as always.
  */
@@ -1343,6 +1344,7 @@ export function buildCoverage(
       members: [],
       reference: [],
       findings: [],
+      pendingSuggestions: 0,
     };
   }
 
@@ -1538,6 +1540,8 @@ export function buildCoverage(
       0,
       COVERAGE_FINDING_CAP
     ),
+    // Fixtures ship no suggestions: the overlay counts whatever an agent adds.
+    pendingSuggestions: 0,
   };
 }
 
@@ -1557,8 +1561,14 @@ export function buildCoverageGates(
    */
   referenceComparable = true
 ): ValidationGate[] {
+  // A suggested verdict is a proposal, not a settlement: it stays open until a
+  // human confirms it, whatever it says.
   const open = (type: CoverageFinding["type"]) =>
-    findings.filter((f) => f.type === type && !SETTLING_VERDICTS.has(f.verdict?.value ?? ""));
+    findings.filter(
+      (f) =>
+        f.type === type &&
+        !(f.verdict?.status !== "suggested" && SETTLING_VERDICTS.has(f.verdict?.value ?? ""))
+    );
 
   const gate = (
     key: GateKey,
@@ -1589,7 +1599,9 @@ export function buildCoverageGates(
     })),
   });
 
-  const terminals = open("unconnected_terminal");
+  // A lift island (both ends unconnected) counts against the terminal gate,
+  // mirroring the backend's `alsoCounts`.
+  const terminals = [...open("lift_island"), ...open("unconnected_terminal")];
   const isolated = open("isolated_component");
   const refLifts = open("missing_reference_lift");
   const difficulty = open("missing_difficulty");

@@ -18,6 +18,8 @@ import {
   AuditListResponse,
   CandidateSearchResponse,
   CoverageResponse,
+  CoverageReviewResponse,
+  CoverageSuggestionsResponse,
   EnrichmentEstimate,
   EnrichmentReport,
   HarvestResponse,
@@ -79,6 +81,8 @@ async function call<S extends z.ZodTypeAny>(
     actor?: Actor;
     /** Routes whose contract return type is `T | null`: a 404 is data, not an error. */
     nullOn404?: boolean;
+    /** Agent routes: the model id that produced the payload, for the audit row. */
+    model?: string;
   }
 ): Promise<z.infer<S>> {
   const spec = ROUTES[route];
@@ -99,6 +103,7 @@ async function call<S extends z.ZodTypeAny>(
   // server-side; the browser never supplies it.
   const actor = opts.actor ?? (await getConsoleSession())?.actor;
   if (actor) headers["x-alpline-actor"] = actor.email;
+  if (opts.model) headers["x-alpline-model"] = opts.model;
   if (opts.body !== undefined) headers["content-type"] = "application/json";
 
   const res = await fetch(url, {
@@ -211,6 +216,21 @@ export const httpIngestionApi: IngestionApi = {
 
   submitCoverageVerdicts: (registryId, req, actor) =>
     call("submitCoverageVerdicts", VerdictsResponse, {
+      params: [registryId],
+      body: req,
+      actor,
+    }),
+
+  submitCoverageSuggestions: (registryId, req, actor, model) =>
+    call("submitCoverageSuggestions", CoverageSuggestionsResponse, {
+      params: [registryId],
+      body: req,
+      actor,
+      model,
+    }),
+
+  reviewCoverageSuggestions: (registryId, req, actor) =>
+    call("reviewCoverageSuggestions", CoverageReviewResponse, {
       params: [registryId],
       body: req,
       actor,
