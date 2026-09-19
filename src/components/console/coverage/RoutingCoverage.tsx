@@ -1088,6 +1088,14 @@ function SuggestionCard({
                 {EVIDENCE_SOURCE_LABEL[e.source]}
               </span>{" "}
               <code className="rounded-sm bg-[var(--fill-strong)] px-1">{e.ref}</code>
+              {e.resolvable === false && (
+                <span
+                  className="ml-1 rounded-sm bg-[var(--fill-strong)] px-1 text-[var(--label-3)]"
+                  title="Recorded before refs were shape-checked; this one cannot be chased from the id alone"
+                >
+                  legacy
+                </span>
+              )}
               <span className="text-[var(--label-3)]"> — {e.note}</span>
             </li>
           ))}

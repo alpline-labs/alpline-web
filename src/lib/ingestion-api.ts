@@ -888,6 +888,8 @@ export const CoverageEvidence = z.object({
   source: z.enum(["osm", "operator_map", "graph", "liftie", "web"]),
   ref: z.string(),
   note: z.string(),
+  /** Derived by the backend on read: false = a legacy ref that cannot be chased from the id. */
+  resolvable: z.boolean().optional(),
 });
 export type CoverageEvidence = z.infer<typeof CoverageEvidence>;
 
