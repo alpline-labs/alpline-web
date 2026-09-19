@@ -912,6 +912,8 @@ export const CoverageVerdictRecord = z.object({
   model: z.string().optional(),
   /** verdict-policy.md version the suggestion was made under; re-sort the queue by it when a rule changes. */
   policyVersion: z.string().optional(),
+  /** Only on blocked_on_evidence: what would unblock it — countable, so the bucket drains by need rather than sitting stuck. */
+  needs: z.enum(["operator_map_inventory", "liftie_feed", "imagery", "field_survey", "osm_edit"]).optional(),
   confirmedBy: z.string().email().optional(),
   confirmedAt: Instant.optional(),
 });

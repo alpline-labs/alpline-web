@@ -1079,6 +1079,11 @@ function SuggestionCard({
       {verdict.reason && (
         <p className="text-[11px] leading-snug text-[var(--label-2)]">{verdict.reason}</p>
       )}
+      {verdict.needs && (
+        <p className="text-[10px] leading-snug text-[var(--label-3)]">
+          needs <code className="rounded-sm bg-[var(--fill-strong)] px-1">{verdict.needs.replace(/_/g, " ")}</code>
+        </p>
+      )}
 
       {verdict.evidence && verdict.evidence.length > 0 && (
         <ul className="space-y-1">
