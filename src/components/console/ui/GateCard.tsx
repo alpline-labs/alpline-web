@@ -60,7 +60,7 @@ export function GateCard({
               {gate.waiver.reason}
             </span>
           )}
-          <GateChip status={gate.status} blocking={gate.blocking} />
+          <GateChip status={gate.status} blocking={gate.blocking} notRunWhy={gate.notRunWhy} />
         </span>
       </div>
     );
@@ -81,7 +81,7 @@ export function GateCard({
           {gate.count > 0 && (
             <span className="tabular text-[11px] text-[var(--label-3)]">{gate.count}</span>
           )}
-          <GateChip status={gate.status} blocking={gate.blocking} />
+          <GateChip status={gate.status} blocking={gate.blocking} notRunWhy={gate.notRunWhy} />
         </div>
       </div>
 

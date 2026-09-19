@@ -590,6 +590,13 @@ export const ValidationGate = z.object({
   /** A failing blocking gate stops advancement to Stage 3. This is the QA that Slopes does by eye, made structural. */
   blocking: z.boolean(),
   waiver: Waiver.nullable(),
+  /**
+   * Coverage gates only — why a gate is not_run. "unsourced": nothing exists
+   * to judge it against; a routing-only publish records it rather than
+   * waiting on a waiver. "insufficient": a source exists but cannot judge
+   * (shared graph, feed below the floor) — still blocks until waived.
+   */
+  notRunWhy: z.enum(["unmeasured", "unsourced", "insufficient"]).nullable().optional(),
   /** Named offenders, capped server-side, so the card can show evidence. */
   evidence: z.array(z.object({ id: z.string(), label: z.string(), detail: z.string() })),
 });
@@ -900,11 +907,14 @@ export const CoverageVerdictRecord = z.object({
   at: Instant,
   /**
    * "confirmed" — a human settled it and it counts against the gate.
+   * "auto_confirmed" — the agent settled it after an independent confirmer
+   * agreed (2026-09-19): counts against the gate like a human confirm, is
+   * listed separately, and is reopenable in bulk by model / policy version.
    * "suggested" — an agent proposed it: shown, audited and reviewable, but it
    * settles nothing until confirmed. Absent on records written before
    * suggestions existed; render those as confirmed.
    */
-  status: z.enum(["suggested", "confirmed"]).optional(),
+  status: z.enum(["suggested", "confirmed", "auto_confirmed"]).optional(),
   /** The agent's own score. Advisory — it never relaxes a gate. */
   confidence: z.number().min(0).max(1).optional(),
   evidence: z.array(CoverageEvidence).optional(),
@@ -916,6 +926,12 @@ export const CoverageVerdictRecord = z.object({
   needs: z.enum(["operator_map_inventory", "liftie_feed", "imagery", "field_survey", "osm_edit"]).optional(),
   confirmedBy: z.string().email().optional(),
   confirmedAt: Instant.optional(),
+  /** Set by a detector on a class the agent must never settle itself (an upper-end, no-downhill terminal). */
+  settleGuard: z.string().optional(),
+  /** Only on auto_confirmed: the independent confirmer that agreed, and why. */
+  autoConfirm: z
+    .object({ model: z.string(), policyVersion: z.string(), reason: z.string(), at: Instant })
+    .optional(),
 });
 export type CoverageVerdictRecord = z.infer<typeof CoverageVerdictRecord>;
 
@@ -1026,6 +1042,8 @@ export const CoverageResponse = z.object({
   /** Agent suggestions awaiting a human, counted over ALL findings rather
    *  than the capped page. None of them has settled a gate. */
   pendingSuggestions: z.number().int().nonnegative(),
+  /** Verdicts the agent settled itself (status auto_confirmed) among live findings. */
+  autoConfirmed: z.number().int().nonnegative().optional(),
 });
 export type CoverageResponse = z.infer<typeof CoverageResponse>;
 

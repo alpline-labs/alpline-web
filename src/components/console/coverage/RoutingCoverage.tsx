@@ -52,6 +52,7 @@ const VERDICT_LABEL: Record<CoverageVerdictValue, string> = {
 
 /** An agent's proposal, not a ruling: it is still work, and settles no gate. */
 const isSuggestion = (f: CoverageFinding) => f.verdict?.status === "suggested";
+const isAutoConfirmed = (f: CoverageFinding) => f.verdict?.status === "auto_confirmed";
 
 /** Queue order: untouched, then proposals awaiting a human, then settled. */
 const rank = (f: CoverageFinding) => (!f.verdict ? 0 : isSuggestion(f) ? 1 : 2);
@@ -191,6 +192,9 @@ function CoverageWorkspace({
     () => findings.filter((f) => f.verdict && !isSuggestion(f)),
     [findings]
   );
+  // The fourth bucket (2026-09-19): settled, but by the agent — counts
+  // against gates like a human confirm, so it must never read as one.
+  const autoConfirmed = useMemo(() => findings.filter(isAutoConfirmed), [findings]);
   const workable = useMemo(() => [...open, ...suggested], [open, suggested]);
 
   const byType = useMemo(() => {
@@ -416,6 +420,14 @@ function CoverageWorkspace({
                     title="Agent suggestions awaiting your review. None of them has settled a gate."
                   >
                     {suggested.length} suggested
+                  </span>
+                )}
+                {autoConfirmed.length > 0 && (
+                  <span
+                    className="tabular ml-1 rounded-sm border border-[var(--c-warn)] px-1 text-[10px] font-medium text-[var(--c-warn)]"
+                    title="Verdicts the agent settled itself after an independent confirmer agreed. They count against gates like a human confirm. Undo a batch with `gis reopen … --status auto_confirmed`."
+                  >
+                    {autoConfirmed.length} auto-confirmed
                   </span>
                 )}
               </h2>
@@ -677,7 +689,18 @@ function CoverageWorkspace({
                       </span>
                     </p>
                     <p className="text-[10px] text-[var(--label-4)]">
-                      {f.verdict!.actor}, {formatInstant(f.verdict!.at)}
+                      {isAutoConfirmed(f) ? (
+                        <span
+                          className="text-[var(--c-warn)]"
+                          title={`Suggested by ${f.verdict!.model ?? f.verdict!.actor}; agreed by ${f.verdict!.autoConfirm?.model ?? "the confirmer"}: ${f.verdict!.autoConfirm?.reason ?? ""}`}
+                        >
+                          agent · {f.verdict!.model ?? f.verdict!.actor} · agreed by{" "}
+                          {f.verdict!.autoConfirm?.model ?? "confirmer"}
+                        </span>
+                      ) : (
+                        f.verdict!.actor
+                      )}
+                      , {formatInstant(f.verdict!.at)}
                       {f.verdict!.reason && ` — ${f.verdict!.reason}`}
                     </p>
                   </li>

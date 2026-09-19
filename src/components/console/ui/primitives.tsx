@@ -81,11 +81,24 @@ const GATE_TONE: Record<GateStatus, { chip: string; label: string }> = {
  * fails is rendered as a warning rather than as "Blocking", which would be a
  * lie about what it stops. `missing_difficulty` is the only one today.
  */
-export function GateChip({ status, blocking = true }: { status: GateStatus; blocking?: boolean }) {
+export function GateChip({
+  status,
+  blocking = true,
+  notRunWhy,
+}: {
+  status: GateStatus;
+  blocking?: boolean;
+  /** Coverage gates: why not_run. "unsourced" reads "No source" — recorded at publish, not blocking. */
+  notRunWhy?: "unmeasured" | "unsourced" | "insufficient" | null;
+}) {
   const t =
     status === "fail" && !blocking
       ? { chip: "bg-[var(--c-warn-bg)] text-[var(--c-warn)]", label: "Warn" }
-      : GATE_TONE[status];
+      : status === "not_run" && notRunWhy === "unsourced"
+        ? { chip: "bg-[var(--fill)] text-[var(--label-3)]", label: "No source" }
+        : status === "not_run" && notRunWhy === "insufficient"
+          ? { chip: "bg-[var(--c-blocked-bg)] text-[var(--c-blocked)]", label: "Unjudged" }
+          : GATE_TONE[status];
   return (
     <span className={cn("inline-flex h-[19px] items-center rounded-sm px-1.5 text-[11px] font-medium", t.chip)}>
       {t.label}
