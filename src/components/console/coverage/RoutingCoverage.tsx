@@ -47,6 +47,7 @@ const VERDICT_LABEL: Record<CoverageVerdictValue, string> = {
   local_override: "Local override",
   accept_gap: "Accept gap",
   retry: "Retry",
+  blocked_on_evidence: "Blocked on evidence",
 };
 
 /** An agent's proposal, not a ruling: it is still work, and settles no gate. */

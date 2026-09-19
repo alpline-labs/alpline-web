@@ -793,7 +793,7 @@ export type PisteMapAsset = z.infer<typeof PisteMapAsset>;
 export const QaWorkspaceResponse = z.object({
   registryId: z.string().uuid(),
   registryName: z.string(),
-  runId: z.string().uuid(),
+  runId: z.string().uuid().nullable(), // null for a routing-only entry with no harvest: no place layer to draw
   checks: z.array(QaCheck),
   checklist: z.array(ChecklistItem),
   pisteMaps: z.array(PisteMapAsset),
@@ -865,6 +865,7 @@ export const CoverageVerdictValue = z.enum([
   "local_override",   // graph repair (connector/tag) recorded as our evidence — never traced geometry
   "accept_gap",       // reason mandatory — e.g. a decommissioned lift the feed still lists
   "retry",            // re-check after an upstream fix landed
+  "blocked_on_evidence", // the adjudicator declining: the deciding evidence (inventory, feed) does not exist yet; reason names what would settle it. Never settles.
 ]);
 export type CoverageVerdictValue = z.infer<typeof CoverageVerdictValue>;
 
@@ -907,6 +908,8 @@ export const CoverageVerdictRecord = z.object({
   evidence: z.array(CoverageEvidence).optional(),
   /** Model id behind the suggestion, so a bad batch can be traced. */
   model: z.string().optional(),
+  /** verdict-policy.md version the suggestion was made under; re-sort the queue by it when a rule changes. */
+  policyVersion: z.string().optional(),
   confirmedBy: z.string().email().optional(),
   confirmedAt: Instant.optional(),
 });
