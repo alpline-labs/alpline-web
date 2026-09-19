@@ -20,21 +20,32 @@ export function GateCard({
   gate,
   onWaive,
   waiveHint = "Why is it correct to advance despite this gate? Recorded against your name.",
+  canWaiveUnjudged = false,
 }: {
   gate: ValidationGate;
   onWaive: (reason: string) => Promise<unknown>;
   waiveHint?: string;
+  /**
+   * Coverage gates only: a BLOCKING gate that could not be judged on a
+   * measured graph (no reference to compare against) blocks publish exactly
+   * like a failing one, and is waived the same way — skipping a blocking
+   * check is a recorded human decision, never the default. Membership gates
+   * leave this off; their waive endpoint accepts failing gates only.
+   */
+  canWaiveUnjudged?: boolean;
 }) {
   const [waiving, setWaiving] = useState(false);
   const [reason, setReason] = useState("");
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
-  const failing = gate.status === "fail";
+  const actionable =
+    gate.status === "fail" ||
+    (gate.status === "not_run" && gate.blocking && canWaiveUnjudged);
 
   // A gate that passes is not work. It collapses to one line so the gates that
   // are actually blocking get the vertical space and are never scrolled out of
   // sight behind a wall of green.
-  if (!failing) {
+  if (!actionable) {
     return (
       <div className="flex items-center justify-between gap-2 rounded-sm border border-[var(--separator)] bg-[var(--bg)] px-2 py-1.5">
         <span className="truncate text-[11px] text-[var(--label-2)]" title={gate.detail}>

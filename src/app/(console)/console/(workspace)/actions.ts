@@ -9,6 +9,8 @@ import type {
   CandidateSearchQuery,
   CandidateSearchResponse,
   ConflictVerdictValue,
+  CoverageReviewRequest,
+  CoverageReviewResponse,
   CoverageVerdictsRequest,
   GateKey,
   ManifestValidation,
@@ -147,6 +149,23 @@ export async function submitCoverageVerdicts(
     }
   }
   const res = await getIngestionApi().submitCoverageVerdicts(registryId, { verdicts }, actor);
+  revalidateEntry(registryId);
+  return res;
+}
+
+/**
+ * Review an agent's suggestions. Omitting `verdict` confirms what was
+ * suggested; another value overrides it; `null` rejects it and leaves the
+ * finding open. There is deliberately no action for *writing* suggestions
+ * from the console — that is the agent's route, and a human clicking here is
+ * always the confirming party.
+ */
+export async function reviewCoverageSuggestions(
+  registryId: string,
+  decisions: CoverageReviewRequest["decisions"]
+): Promise<CoverageReviewResponse> {
+  const actor = await requireConsoleActor();
+  const res = await getIngestionApi().reviewCoverageSuggestions(registryId, { decisions }, actor);
   revalidateEntry(registryId);
   return res;
 }

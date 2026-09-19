@@ -15,6 +15,10 @@ import type {
   CandidateSearchResponse,
   CoverageFinding,
   CoverageResponse,
+  CoverageReviewRequest,
+  CoverageReviewResponse,
+  CoverageSuggestionsRequest,
+  CoverageSuggestionsResponse,
   CoverageVerdictsRequest,
   EnrichmentEstimate,
   EnrichmentReport,
@@ -179,14 +183,16 @@ function coverageFor(b: BuiltEntry): CoverageResponse {
     return { ...g, waiver };
   });
 
+  // The order a reviewer works the queue: untouched, then agent suggestions
+  // awaiting review, then what is already settled.
+  const rank = (f: CoverageFinding) =>
+    f.verdict == null ? 0 : f.verdict.status === "suggested" ? 1 : 2;
+
   return {
     ...base,
-    // Unresolved first: the queue is the screen, and a reviewed finding is
-    // history rather than work.
-    findings: [...findings].sort(
-      (x, y) => Number(Boolean(x.verdict)) - Number(Boolean(y.verdict))
-    ),
+    findings: [...findings].sort((x, y) => rank(x) - rank(y)),
     gates,
+    pendingSuggestions: findings.filter((f) => f.verdict?.status === "suggested").length,
   };
 }
 
@@ -1079,6 +1085,125 @@ export const mockIngestionApi: IngestionApi = {
       remaining: coverageFor(b).findings.filter((f) => !f.verdict).length,
       auditIds,
     };
+  },
+
+  async submitCoverageSuggestions(
+    registryId: string,
+    req: CoverageSuggestionsRequest,
+    actor: Actor,
+    model: string
+  ): Promise<CoverageSuggestionsResponse> {
+    const b = byId(registryId);
+    if (!b) throw new Error(`Unknown registry entry ${registryId}`);
+    if (!model.trim()) {
+      throw new Error("A suggestion is attributable or it is not reviewable: model id required.");
+    }
+
+    const known = new Map(coverageFor(b).findings.map((f) => [f.id, f]));
+    const at = new Date().toISOString();
+    const skipped: { findingId: string; why: string }[] = [];
+    let applied = 0;
+
+    for (const s of req.suggestions) {
+      const finding = known.get(s.findingId);
+      if (!finding) {
+        skipped.push({ findingId: s.findingId, why: "no such finding" });
+        continue;
+      }
+      // A human has already ruled here; the agent does not get to re-open it.
+      if (finding.verdict && finding.verdict.status !== "suggested") {
+        skipped.push({ findingId: s.findingId, why: "already confirmed" });
+        continue;
+      }
+      overlay.coverageVerdicts.set(`${registryId}:${s.findingId}`, {
+        value: s.verdict,
+        reason: s.reason,
+        actor: actor.email,
+        at,
+        status: "suggested",
+        confidence: s.confidence,
+        evidence: s.evidence,
+        model,
+      });
+      applied++;
+      recordAudit({
+        actor: actor.email,
+        action: `coverage_suggestion.${s.verdict}`,
+        registryId,
+        target: finding.label,
+        detail: `${model} suggested ${s.verdict} for “${finding.label}” at ${s.confidence.toFixed(2)} confidence, on ${s.evidence.length} piece(s) of evidence. Settles nothing until reviewed.`,
+        reason: s.reason,
+      });
+    }
+
+    return {
+      applied,
+      skipped,
+      pending: coverageFor(b).pendingSuggestions,
+    };
+  },
+
+  async reviewCoverageSuggestions(
+    registryId: string,
+    req: CoverageReviewRequest,
+    actor: Actor
+  ): Promise<CoverageReviewResponse> {
+    const b = byId(registryId);
+    if (!b) throw new Error(`Unknown registry entry ${registryId}`);
+
+    const known = new Map(coverageFor(b).findings.map((f) => [f.id, f]));
+    let confirmed = 0;
+    let rejected = 0;
+
+    for (const d of req.decisions) {
+      const key = `${registryId}:${d.findingId}`;
+      const prev = overlay.coverageVerdicts.get(key);
+      if (!prev || prev.status !== "suggested") continue;
+      const label = known.get(d.findingId)?.label ?? d.findingId;
+
+      if (d.verdict === null) {
+        overlay.coverageVerdicts.delete(key);
+        rejected++;
+        recordAudit({
+          actor: actor.email,
+          action: "coverage_suggestion.reject",
+          registryId,
+          target: label,
+          detail: `Rejected the ${prev.value} suggested by ${prev.model ?? prev.actor}. The finding stays open.`,
+          reason: d.reason?.trim() || null,
+        });
+        continue;
+      }
+
+      const value = d.verdict ?? prev.value;
+      const reason = d.reason?.trim() || prev.reason;
+      if (value === "accept_gap" && !reason) {
+        throw new Error("Accepting a coverage gap needs a reason.");
+      }
+      const at = new Date().toISOString();
+      overlay.coverageVerdicts.set(key, {
+        ...prev,
+        value,
+        reason,
+        status: "confirmed",
+        confirmedBy: actor.email,
+        confirmedAt: at,
+      });
+      confirmed++;
+      recordAudit({
+        actor: actor.email,
+        action: `coverage.${value}`,
+        registryId,
+        target: label,
+        detail:
+          value === prev.value
+            ? `Confirmed the ${value} suggested by ${prev.model ?? prev.actor} for “${label}”.`
+            : `Overrode ${prev.value} suggested by ${prev.model ?? prev.actor} with ${value} for “${label}”.`,
+        reason,
+      });
+    }
+
+    return { confirmed, rejected, pending: coverageFor(b).pendingSuggestions };
   },
 
   async waiveCoverageGate(

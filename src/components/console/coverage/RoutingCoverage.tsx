@@ -4,6 +4,7 @@ import { useCallback, useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
 import type {
   BBox,
+  CoverageEvidence,
   CoverageFinding,
   CoverageFindingType,
   CoverageMemberStats,
@@ -22,6 +23,7 @@ import {
   type Binding,
 } from "@/components/console/useKeyboard";
 import {
+  reviewCoverageSuggestions,
   submitCoverageVerdicts,
   waiveCoverageGate,
 } from "@/app/(console)/console/(workspace)/actions";
@@ -31,17 +33,35 @@ const ROW_H = 56;
 
 /** Queue order: the graph defects first, the tagging chore last. */
 const TYPE_ORDER: CoverageFindingType[] = [
+  "lift_island",
   "unconnected_terminal",
   "isolated_component",
   "missing_reference_lift",
+  "sector_attribution",
   "missing_difficulty",
 ];
 
 const VERDICT_LABEL: Record<CoverageVerdictValue, string> = {
   fix_upstream: "Fix upstream",
+  fix_pipeline: "Fix pipeline",
   local_override: "Local override",
   accept_gap: "Accept gap",
   retry: "Retry",
+  blocked_on_evidence: "Blocked on evidence",
+};
+
+/** An agent's proposal, not a ruling: it is still work, and settles no gate. */
+const isSuggestion = (f: CoverageFinding) => f.verdict?.status === "suggested";
+
+/** Queue order: untouched, then proposals awaiting a human, then settled. */
+const rank = (f: CoverageFinding) => (!f.verdict ? 0 : isSuggestion(f) ? 1 : 2);
+
+const EVIDENCE_SOURCE_LABEL: Record<CoverageEvidence["source"], string> = {
+  osm: "OSM",
+  operator_map: "Operator map",
+  graph: "Routing graph",
+  liftie: "Lift feed",
+  web: "Web",
 };
 
 /**
@@ -151,25 +171,37 @@ function CoverageWorkspace({
         .map((f) => (local.has(f.id) ? { ...f, verdict: local.get(f.id)! } : f))
         .sort(
           (a, b) =>
-            Number(Boolean(a.verdict)) - Number(Boolean(b.verdict)) ||
+            rank(a) - rank(b) ||
             TYPE_ORDER.indexOf(a.type) - TYPE_ORDER.indexOf(b.type) ||
             a.label.localeCompare(b.label)
         ),
     [data.findings, local]
   );
 
+  /**
+   * Three buckets, not two. A suggested verdict looks settled — it has a
+   * value, an actor and a timestamp — but it is an agent's proposal that
+   * closes no gate, so it belongs in the work queue rather than in history.
+   * Filing it under "reviewed" would hide exactly the rows a human is here
+   * to read.
+   */
   const open = useMemo(() => findings.filter((f) => !f.verdict), [findings]);
-  const reviewed = useMemo(() => findings.filter((f) => f.verdict), [findings]);
+  const suggested = useMemo(() => findings.filter(isSuggestion), [findings]);
+  const reviewed = useMemo(
+    () => findings.filter((f) => f.verdict && !isSuggestion(f)),
+    [findings]
+  );
+  const workable = useMemo(() => [...open, ...suggested], [open, suggested]);
 
   const byType = useMemo(() => {
     const m = new Map<CoverageFindingType, number>();
-    for (const f of open) m.set(f.type, (m.get(f.type) ?? 0) + 1);
+    for (const f of workable) m.set(f.type, (m.get(f.type) ?? 0) + 1);
     return m;
-  }, [open]);
+  }, [workable]);
 
   const queue = useMemo(
-    () => (types.size === 0 ? open : open.filter((f) => types.has(f.type))),
-    [open, types]
+    () => (types.size === 0 ? workable : workable.filter((f) => types.has(f.type))),
+    [workable, types]
   );
 
   const cursor = useQueueCursor(queue, (f) => f.id);
@@ -205,6 +237,46 @@ function CoverageWorkspace({
     [registryId]
   );
 
+  /**
+   * Review an agent's proposal. `verdict` undefined confirms what was
+   * suggested, a value overrides it, null rejects it and reopens the finding.
+   * Optimistic like `apply`, and rolls back the same way.
+   */
+  const review = useCallback(
+    async (finding: CoverageFinding, verdict?: CoverageVerdictValue | null, why?: string) => {
+      const prior = finding.verdict;
+      if (!prior) return;
+      setError(null);
+      setLocal((m) =>
+        new Map(m).set(
+          finding.id,
+          verdict === null
+            ? null
+            : {
+                ...prior,
+                value: verdict ?? prior.value,
+                reason: why?.trim() || prior.reason,
+                status: "confirmed",
+                confirmedAt: new Date().toISOString(),
+              }
+        )
+      );
+      try {
+        await reviewCoverageSuggestions(registryId, [
+          { findingId: finding.id, verdict, reason: why?.trim() || null },
+        ]);
+      } catch (e) {
+        setLocal((m) => {
+          const next = new Map(m);
+          next.delete(finding.id);
+          return next;
+        });
+        setError(e instanceof Error ? e.message : "Could not record that review.");
+      }
+    },
+    [registryId]
+  );
+
   const bindings: Binding[] = useMemo(
     () => [
       { keys: ["j", "ArrowDown"], label: "Next", group: "Navigate", run: () => cursor.move(1) },
@@ -215,6 +287,13 @@ function CoverageWorkspace({
         group: "Verdict",
         disabled: !active,
         run: () => active && void apply(active, "fix_upstream"),
+      },
+      {
+        keys: ["p"],
+        label: "Fix pipeline",
+        group: "Verdict",
+        disabled: !active,
+        run: () => active && void apply(active, "fix_pipeline"),
       },
       {
         keys: ["o"],
@@ -240,8 +319,22 @@ function CoverageWorkspace({
         disabled: !active,
         run: () => active && void apply(active, "retry"),
       },
+      {
+        keys: ["c"],
+        label: "Confirm suggestion",
+        group: "Review",
+        disabled: !active || !isSuggestion(active),
+        run: () => active && isSuggestion(active) && void review(active),
+      },
+      {
+        keys: ["x"],
+        label: "Reject suggestion",
+        group: "Review",
+        disabled: !active || !isSuggestion(active),
+        run: () => active && isSuggestion(active) && void review(active, null),
+      },
     ],
-    [active, apply, cursor]
+    [active, apply, review, cursor]
   );
 
   useHotkeys(bindings, !accepting);
@@ -303,6 +396,7 @@ function CoverageWorkspace({
                   key={g.key}
                   gate={g}
                   waiveHint="Why is it correct to publish despite this gate? Recorded against your name."
+                  canWaiveUnjudged={data.graph.edges > 0}
                   onWaive={(why) => waiveCoverageGate(registryId, g.key, why)}
                 />
               ))}
@@ -316,6 +410,14 @@ function CoverageWorkspace({
                 <span className="tabular ml-1 rounded-sm bg-[var(--fill)] px-1 text-[11px] font-medium text-[var(--label-2)]">
                   {queue.length}
                 </span>
+                {suggested.length > 0 && (
+                  <span
+                    className="tabular ml-1 rounded-sm border border-dashed border-[var(--label-4)] px-1 text-[10px] font-medium text-[var(--label-3)]"
+                    title="Agent suggestions awaiting your review. None of them has settled a gate."
+                  >
+                    {suggested.length} suggested
+                  </span>
+                )}
               </h2>
               {types.size > 0 && (
                 <button
@@ -399,8 +501,17 @@ function CoverageWorkspace({
                 {active.detail}
               </p>
 
+              {isSuggestion(active) && active.verdict && (
+                <SuggestionCard
+                  verdict={active.verdict}
+                  onConfirm={() => void review(active)}
+                  onReject={() => void review(active, null)}
+                />
+              )}
+
               <div className="flex flex-wrap gap-1">
                 <VerdictButton k="f" label="Fix upstream" onClick={() => void apply(active, "fix_upstream")} />
+                <VerdictButton k="p" label="Fix pipeline" onClick={() => void apply(active, "fix_pipeline")} />
                 <VerdictButton k="o" label="Local override" onClick={() => void apply(active, "local_override")} />
                 <VerdictButton
                   k="a"
@@ -415,10 +526,12 @@ function CoverageWorkspace({
 
               {/* The rule the analyst needs at the keystroke is the one line;
                   the rest is reference, and the queue needs the room more. */}
-              {/* What each verdict means, not what it does to the gate: a
-                  reviewed finding stops counting against its gate whatever the
-                  verdict, so asserting a rule here would be describing the
-                  console's opinion rather than the backend's behaviour. */}
+              {/* What each verdict means, and — since the two differ — what it
+                  does to the gate. Only local_override and accept_gap are
+                  claims about the graph itself, so only those stop a finding
+                  counting (backend `settlesGate`). An earlier version of this
+                  comment said any verdict settles a gate; it never did, and
+                  analysts were reading "fix upstream" as a way to clear one. */}
               <details className="text-[10px] text-[var(--label-4)]">
                 <summary className="cursor-pointer leading-snug">
                   What each verdict records
@@ -427,12 +540,22 @@ function CoverageWorkspace({
                   <b className="font-medium text-[var(--label-3)]">Fix upstream</b> — the gap is
                   real and belongs in OSM, where everyone downstream benefits. Recorded here and
                   re-checked after the next extract; the console never edits OSM.{" "}
+                  <b className="font-medium text-[var(--label-3)]">Fix pipeline</b> — OSM has it
+                  right and we dropped it on the way in. Nobody should go edit OSM for these; the
+                  fix is ours and lands on a re-extract.{" "}
                   <b className="font-medium text-[var(--label-3)]">Local override</b> — a graph
                   repair (a connector edge, a tag) recorded as our own evidence over OSM. It draws
                   no geometry; hand-tracing is the thing we specifically do not do.{" "}
                   <b className="font-medium text-[var(--label-3)]">Accept gap</b> — the gap is
                   correct, reason mandatory. <b className="font-medium text-[var(--label-3)]">Retry</b>{" "}
                   — re-check once an upstream fix has landed.
+                </p>
+                <p className="mt-1 leading-snug">
+                  Only <b className="font-medium text-[var(--label-3)]">local override</b> and{" "}
+                  <b className="font-medium text-[var(--label-3)]">accept gap</b> stop a finding
+                  counting against its gate — they are the two that say something about the graph.
+                  Fix upstream and retry both mean “still broken, the fix is elsewhere”, so the
+                  gate keeps failing until a re-extract clears it or you waive it.
                 </p>
               </details>
 
@@ -787,6 +910,7 @@ function GradeLegend({ members }: { members: CoverageMemberStats[] }) {
 
 const SOURCE_TITLE: Record<ReferenceComparison["source"], string> = {
   liftie: "Operator feed (liftie)",
+  operator_map: "Operator piste maps",
   skimap: "Skimap entry",
   declared: "Official figures",
 };
@@ -821,7 +945,11 @@ function ReferencePanel({ reference }: { reference: ReferenceComparison[] }) {
                     : "bg-[var(--fill)] text-[var(--label-3)]"
                 )}
               >
-                {r.status === "ok" ? "Compared" : "Unavailable"}
+                {r.status === "ok"
+                  ? "Compared"
+                  : r.status === "insufficient"
+                    ? "Insufficient"
+                    : "Unavailable"}
               </span>
             </div>
 
@@ -916,5 +1044,77 @@ function VerdictButton({
       </kbd>
       {label}
     </button>
+  );
+}
+
+
+/**
+ * An agent's proposal, laid out so reviewing means checking the evidence
+ * rather than re-deriving the answer. Confidence is shown but deliberately
+ * not used to style the card louder or quieter: the agent's own score is not
+ * a reason to look harder or less hard, and a confident wrong answer is the
+ * failure this screen exists to catch.
+ */
+function SuggestionCard({
+  verdict,
+  onConfirm,
+  onReject,
+}: {
+  verdict: NonNullable<CoverageFinding["verdict"]>;
+  onConfirm: () => void;
+  onReject: () => void;
+}) {
+  return (
+    <div className="space-y-2 rounded-sm border border-dashed border-[var(--label-4)] bg-[var(--fill)] p-2">
+      <div className="flex items-baseline justify-between gap-2">
+        <p className="text-[11px] font-medium">
+          Suggested: {VERDICT_LABEL[verdict.value]}
+        </p>
+        <span className="tabular shrink-0 text-[10px] text-[var(--label-3)]">
+          {verdict.confidence !== undefined && <>{Math.round(verdict.confidence * 100)}% · </>}
+          {verdict.model ?? verdict.actor}
+        </span>
+      </div>
+
+      {verdict.reason && (
+        <p className="text-[11px] leading-snug text-[var(--label-2)]">{verdict.reason}</p>
+      )}
+      {verdict.needs && (
+        <p className="text-[10px] leading-snug text-[var(--label-3)]">
+          needs <code className="rounded-sm bg-[var(--fill-strong)] px-1">{verdict.needs.replace(/_/g, " ")}</code>
+        </p>
+      )}
+
+      {verdict.evidence && verdict.evidence.length > 0 && (
+        <ul className="space-y-1">
+          {verdict.evidence.map((e, i) => (
+            <li key={`${e.source}:${e.ref}:${i}`} className="text-[10px] leading-snug">
+              <span className="font-medium text-[var(--label-3)]">
+                {EVIDENCE_SOURCE_LABEL[e.source]}
+              </span>{" "}
+              <code className="rounded-sm bg-[var(--fill-strong)] px-1">{e.ref}</code>
+              {e.resolvable === false && (
+                <span
+                  className="ml-1 rounded-sm bg-[var(--fill-strong)] px-1 text-[var(--label-3)]"
+                  title="Recorded before refs were shape-checked; this one cannot be chased from the id alone"
+                >
+                  legacy
+                </span>
+              )}
+              <span className="text-[var(--label-3)]"> — {e.note}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <div className="flex flex-wrap gap-1">
+        <VerdictButton k="c" label="Confirm" onClick={onConfirm} />
+        <VerdictButton k="x" label="Reject" onClick={onReject} />
+      </div>
+      <p className="text-[10px] leading-snug text-[var(--label-4)]">
+        Nothing here counts against a gate until you confirm it. Rejecting
+        leaves the finding open; any verdict below overrides the suggestion.
+      </p>
+    </div>
   );
 }

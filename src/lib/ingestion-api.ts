@@ -566,6 +566,7 @@ export const GateKey = z.enum([
   "disconnected_terminal",
   "isolated_component",
   "reference_delta",
+  "sector_attribution",
   "missing_difficulty",
 ]);
 export type GateKey = z.infer<typeof GateKey>;
@@ -792,7 +793,7 @@ export type PisteMapAsset = z.infer<typeof PisteMapAsset>;
 export const QaWorkspaceResponse = z.object({
   registryId: z.string().uuid(),
   registryName: z.string(),
-  runId: z.string().uuid(),
+  runId: z.string().uuid().nullable(), // null for a routing-only entry with no harvest: no place layer to draw
   checks: z.array(QaCheck),
   checklist: z.array(ChecklistItem),
   pisteMaps: z.array(PisteMapAsset),
@@ -860,30 +861,72 @@ export type PublishResponse = z.infer<typeof PublishResponse>;
  */
 export const CoverageVerdictValue = z.enum([
   "fix_upstream",     // real gap, belongs in OSM; recorded, re-checked after re-extract
+  "fix_pipeline",     // OSM is right and WE dropped it — our extractor's bug, not a mapper's
   "local_override",   // graph repair (connector/tag) recorded as our evidence — never traced geometry
   "accept_gap",       // reason mandatory — e.g. a decommissioned lift the feed still lists
   "retry",            // re-check after an upstream fix landed
+  "blocked_on_evidence", // the adjudicator declining: the deciding evidence (inventory, feed) does not exist yet; reason names what would settle it. Never settles.
 ]);
 export type CoverageVerdictValue = z.infer<typeof CoverageVerdictValue>;
 
 export const CoverageFindingType = z.enum([
   "unconnected_terminal",   // a lift terminal not joined into the routable graph
+  "lift_island",            // BOTH terminals unconnected: a lift that routes to nothing (single-edge component, invisible to isolated_component)
   "isolated_component",     // a piste cluster ≥ the km floor with no lift edge
   "missing_difficulty",     // piste way with piste:type but no difficulty tag
-  "missing_reference_lift", // liftie (operator feed) lists a lift OSM extraction lacks
+  "missing_reference_lift", // an operator source (liftie feed, or a sourced operator piste map) lists a lift OSM lacks
+  "sector_attribution",     // lift/piste the operator-map sector inventories cannot place (§3.2)
 ]);
 export type CoverageFindingType = z.infer<typeof CoverageFindingType>;
+
+/**
+ * One checkable claim behind a suggested verdict. `ref` is what the reviewer
+ * opens — an OSM way id, an inventory file + sha256, a query result, a URL —
+ * so reviewing means checking the source, not re-deriving the answer.
+ */
+export const CoverageEvidence = z.object({
+  source: z.enum(["osm", "operator_map", "graph", "liftie", "web"]),
+  ref: z.string(),
+  note: z.string(),
+  /** Derived by the backend on read: false = a legacy ref that cannot be chased from the id. */
+  resolvable: z.boolean().optional(),
+});
+export type CoverageEvidence = z.infer<typeof CoverageEvidence>;
 
 export const CoverageVerdictRecord = z.object({
   value: CoverageVerdictValue,
   reason: z.string().nullable(),
   actor: z.string().email(),
   at: Instant,
+  /**
+   * "confirmed" — a human settled it and it counts against the gate.
+   * "suggested" — an agent proposed it: shown, audited and reviewable, but it
+   * settles nothing until confirmed. Absent on records written before
+   * suggestions existed; render those as confirmed.
+   */
+  status: z.enum(["suggested", "confirmed"]).optional(),
+  /** The agent's own score. Advisory — it never relaxes a gate. */
+  confidence: z.number().min(0).max(1).optional(),
+  evidence: z.array(CoverageEvidence).optional(),
+  /** Model id behind the suggestion, so a bad batch can be traced. */
+  model: z.string().optional(),
+  /** verdict-policy.md version the suggestion was made under; re-sort the queue by it when a rule changes. */
+  policyVersion: z.string().optional(),
+  /** Only on blocked_on_evidence: what would unblock it — countable, so the bucket drains by need rather than sitting stuck. */
+  needs: z.enum(["operator_map_inventory", "liftie_feed", "imagery", "field_survey", "osm_edit"]).optional(),
+  confirmedBy: z.string().email().optional(),
+  confirmedAt: Instant.optional(),
 });
 export type CoverageVerdictRecord = z.infer<typeof CoverageVerdictRecord>;
 
 export const CoverageFinding = z.object({
-  /** Stable across recomputation — verdicts key on it. e.g. "terminal:123:456". */
+  /**
+   * Stable across recomputation AND graph rebuilds — verdicts key on it, so
+   * it may contain OSM ids and way ends but never a topology vertex id (those
+   * are renumbered on every postprocess). e.g. "terminal:123456:start",
+   * "difficulty:987654", "component:<id>" (the one exception: component ids
+   * are rebuild-scoped by nature).
+   */
   id: z.string(),
   type: CoverageFindingType,
   label: z.string(),
@@ -917,9 +960,19 @@ export type CoverageMemberStats = z.infer<typeof CoverageMemberStats>;
  * with no OSM counterpart is the single best "we missed one" signal we have.
  */
 export const ReferenceComparison = z.object({
-  source: z.enum(["liftie", "skimap", "declared"]),
-  status: z.enum(["ok", "unavailable"]),
-  /** Why unavailable, or what was compared. "Feed live but no lift list published (out of season)" is a real state — render it, don't hide it. */
+  source: z.enum(["liftie", "operator_map", "skimap", "declared"]),
+  /**
+   * "ok" — compared, and the comparison means something.
+   * "unavailable" — no reference to compare against.
+   * "insufficient" — a reference exists but cannot judge this entry: it names
+   * too few of the extracted lifts (Paradiski's feed listed 2 of 145 and the
+   * gate went green), or the entry's graph is shared with other registry
+   * resorts so the extracted set is not this resort's. `lifts` is still
+   * populated so the numbers are visible; the gate reads not_run, never a
+   * hollow pass.
+   */
+  status: z.enum(["ok", "unavailable", "insufficient"]),
+  /** Why unavailable/insufficient, or what was compared. "Feed live but no lift list published (out of season)" is a real state — render it, don't hide it. */
   detail: z.string(),
   lifts: z
     .object({
@@ -956,6 +1009,13 @@ export const CoverageResponse = z.object({
     pisteKm: z.number().nonnegative(),
     /** % of piste km in a component that also contains a lift edge. */
     reachablePistePct: z.number().nullable(),
+    /**
+     * Other registry resorts whose anchor sits inside this entry's graph —
+     * a linked domain modelled as a leaf, or a duplicate row. Non-empty means
+     * the census and any reference comparison are not this resort's alone.
+     * Optional: only present on a measured report.
+     */
+    sharedWith: z.array(z.object({ resortId: z.string().uuid(), name: z.string() })).optional(),
   }),
   members: z.array(CoverageMemberStats),
   reference: z.array(ReferenceComparison),
@@ -963,6 +1023,9 @@ export const CoverageResponse = z.object({
   findings: z.array(CoverageFinding),
   /** Reuses ValidationGate; keys are the four coverage GateKeys. */
   gates: z.array(ValidationGate),
+  /** Agent suggestions awaiting a human, counted over ALL findings rather
+   *  than the capped page. None of them has settled a gate. */
+  pendingSuggestions: z.number().int().nonnegative(),
 });
 export type CoverageResponse = z.infer<typeof CoverageResponse>;
 
@@ -977,6 +1040,51 @@ export const CoverageVerdictsRequest = z.object({
   ),
 });
 export type CoverageVerdictsRequest = z.infer<typeof CoverageVerdictsRequest>;
+
+/**
+ * The agent's proposal batch. Stricter than the human path on purpose: a
+ * reason, a confidence and at least one evidence item are all mandatory,
+ * because a suggestion nobody can check is worse than no suggestion.
+ */
+export const CoverageSuggestionsRequest = z.object({
+  suggestions: z.array(
+    z.object({
+      findingId: z.string(),
+      verdict: CoverageVerdictValue,
+      reason: z.string().min(1),
+      confidence: z.number().min(0).max(1),
+      evidence: z.array(CoverageEvidence).min(1).max(6),
+    })
+  ),
+});
+export type CoverageSuggestionsRequest = z.infer<typeof CoverageSuggestionsRequest>;
+
+export const CoverageSuggestionsResponse = z.object({
+  applied: z.number().int().nonnegative(),
+  skipped: z.array(z.object({ findingId: z.string(), why: z.string() })),
+  pending: z.number().int().nonnegative(),
+});
+export type CoverageSuggestionsResponse = z.infer<typeof CoverageSuggestionsResponse>;
+
+/** Human review of the queue: omit `verdict` to confirm as suggested, pass
+ *  another value to override, `null` to reject and leave the finding open. */
+export const CoverageReviewRequest = z.object({
+  decisions: z.array(
+    z.object({
+      findingId: z.string(),
+      verdict: CoverageVerdictValue.nullish(),
+      reason: z.string().nullish(),
+    })
+  ),
+});
+export type CoverageReviewRequest = z.infer<typeof CoverageReviewRequest>;
+
+export const CoverageReviewResponse = z.object({
+  confirmed: z.number().int().nonnegative(),
+  rejected: z.number().int().nonnegative(),
+  pending: z.number().int().nonnegative(),
+});
+export type CoverageReviewResponse = z.infer<typeof CoverageReviewResponse>;
 
 /* ========================================================================== *
  *  11. Screen 7 — Runs and audit (`ingestion_runs` rendered)
@@ -1185,6 +1293,18 @@ export interface IngestionApi {
     req: CoverageVerdictsRequest,
     actor: Actor
   ): Promise<VerdictsResponse>;
+  /** Agent-only: proposals, never settlements. Callers pass the model id. */
+  submitCoverageSuggestions(
+    registryId: string,
+    req: CoverageSuggestionsRequest,
+    actor: Actor,
+    model: string
+  ): Promise<CoverageSuggestionsResponse>;
+  reviewCoverageSuggestions(
+    registryId: string,
+    req: CoverageReviewRequest,
+    actor: Actor
+  ): Promise<CoverageReviewResponse>;
   waiveCoverageGate(
     registryId: string,
     key: GateKey,
@@ -1359,6 +1479,20 @@ export const ROUTES = {
     screen: "8 — Routing coverage",
     summary:
       "Apply a batch of fix_upstream / local_override / accept_gap / retry verdicts. Idempotent per finding id, one audit row each.",
+  },
+  submitCoverageSuggestions: {
+    method: "POST",
+    path: "/ingestion/registry/:registryId/coverage/suggestions",
+    screen: "8 — Routing coverage",
+    summary:
+      "An agent's proposed verdicts, with reason, confidence and evidence. Never settles a gate, never overwrites a confirmed verdict; needs an x-alpline-model header.",
+  },
+  reviewCoverageSuggestions: {
+    method: "POST",
+    path: "/ingestion/registry/:registryId/coverage/suggestions/review",
+    screen: "8 — Routing coverage",
+    summary:
+      "Human review of the suggestion queue: confirm as suggested, override with another verdict, or reject and leave the finding open.",
   },
   waiveCoverageGate: {
     method: "POST",
