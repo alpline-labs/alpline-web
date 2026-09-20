@@ -1116,6 +1116,18 @@ function SuggestionCard({
                 {EVIDENCE_SOURCE_LABEL[e.source]}
               </span>{" "}
               <code className="rounded-sm bg-[var(--fill-strong)] px-1">{e.ref}</code>
+              {e.inventoryStatus && e.inventoryStatus !== "complete" && (
+                <span
+                  className="ml-1 rounded-sm bg-[var(--c-warn-bg)] px-1 text-[var(--c-warn)]"
+                  title={
+                    e.inventoryStatus === "unregistered"
+                      ? "No registry row holds this inventory; treat it as unreviewed"
+                      : "An agent transcription nobody has reviewed: check this row against the sheet before trusting it. It can never be auto-confirmed."
+                  }
+                >
+                  {e.inventoryStatus === "unregistered" ? "unregistered" : `${e.inventoryStatus} inventory`}
+                </span>
+              )}
               {e.resolvable === false && (
                 <span
                   className="ml-1 rounded-sm bg-[var(--fill-strong)] px-1 text-[var(--label-3)]"

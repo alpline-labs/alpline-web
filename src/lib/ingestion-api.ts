@@ -597,10 +597,13 @@ export const ValidationGate = z.object({
    * (shared graph, feed below the floor) — still blocks until waived.
    * "stale_source": the operator feed is paired but has no successful
    * scrape — recorded at publish like "unsourced", shown apart so a scraper
-   * to fix is not mistaken for a feed to find.
+   * to fix is not mistaken for a feed to find. "draft_source": operator-map
+   * inventories exist but every one is an unreviewed agent draft —
+   * recorded like "unsourced", shown apart because the action is "review
+   * the draft", not "find a map".
    */
   notRunWhy: z
-    .enum(["unmeasured", "unsourced", "insufficient", "stale_source"])
+    .enum(["unmeasured", "unsourced", "insufficient", "stale_source", "draft_source"])
     .nullable()
     .optional(),
   /** Named offenders, capped server-side, so the card can show evidence. */
@@ -903,6 +906,12 @@ export const CoverageEvidence = z.object({
   note: z.string(),
   /** Derived by the backend on read: false = a legacy ref that cannot be chased from the id. */
   resolvable: z.boolean().optional(),
+  /**
+   * Derived by the backend on read for operator_map refs naming an inventory
+   * file: its review state. Anything but "complete" is an unreviewed agent
+   * transcription — the row to check against the sheet before trusting it.
+   */
+  inventoryStatus: z.enum(["draft", "provisional", "complete", "unregistered"]).optional(),
 });
 export type CoverageEvidence = z.infer<typeof CoverageEvidence>;
 
