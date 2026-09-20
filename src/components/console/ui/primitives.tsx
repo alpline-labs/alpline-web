@@ -88,19 +88,33 @@ export function GateChip({
 }: {
   status: GateStatus;
   blocking?: boolean;
-  /** Coverage gates: why not_run. "unsourced" reads "No source" — recorded at publish, not blocking. */
-  notRunWhy?: "unmeasured" | "unsourced" | "insufficient" | null;
+  /**
+   * Coverage gates: why not_run. "unsourced" reads "No source" — recorded at
+   * publish, not blocking. "stale_source" reads "Stale source": the operator
+   * feed is paired but has no successful scrape — same publish path as no
+   * source, but a scraper to fix rather than a feed to find.
+   */
+  notRunWhy?: "unmeasured" | "unsourced" | "insufficient" | "stale_source" | null;
 }) {
   const t =
     status === "fail" && !blocking
       ? { chip: "bg-[var(--c-warn-bg)] text-[var(--c-warn)]", label: "Warn" }
       : status === "not_run" && notRunWhy === "unsourced"
         ? { chip: "bg-[var(--fill)] text-[var(--label-3)]", label: "No source" }
-        : status === "not_run" && notRunWhy === "insufficient"
-          ? { chip: "bg-[var(--c-blocked-bg)] text-[var(--c-blocked)]", label: "Unjudged" }
-          : GATE_TONE[status];
+        : status === "not_run" && notRunWhy === "stale_source"
+          ? { chip: "bg-[var(--c-warn-bg)] text-[var(--c-warn)]", label: "Stale source" }
+          : status === "not_run" && notRunWhy === "insufficient"
+            ? { chip: "bg-[var(--c-blocked-bg)] text-[var(--c-blocked)]", label: "Unjudged" }
+            : GATE_TONE[status];
+  const title =
+    status === "not_run" && notRunWhy === "stale_source"
+      ? "The operator feed is paired but has no successful scrape"
+      : undefined;
   return (
-    <span className={cn("inline-flex h-[19px] items-center rounded-sm px-1.5 text-[11px] font-medium", t.chip)}>
+    <span
+      className={cn("inline-flex h-[19px] items-center rounded-sm px-1.5 text-[11px] font-medium", t.chip)}
+      title={title}
+    >
       {t.label}
     </span>
   );

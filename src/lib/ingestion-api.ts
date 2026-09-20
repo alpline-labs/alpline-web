@@ -595,8 +595,14 @@ export const ValidationGate = z.object({
    * to judge it against; a routing-only publish records it rather than
    * waiting on a waiver. "insufficient": a source exists but cannot judge
    * (shared graph, feed below the floor) — still blocks until waived.
+   * "stale_source": the operator feed is paired but has no successful
+   * scrape — recorded at publish like "unsourced", shown apart so a scraper
+   * to fix is not mistaken for a feed to find.
    */
-  notRunWhy: z.enum(["unmeasured", "unsourced", "insufficient"]).nullable().optional(),
+  notRunWhy: z
+    .enum(["unmeasured", "unsourced", "insufficient", "stale_source"])
+    .nullable()
+    .optional(),
   /** Named offenders, capped server-side, so the card can show evidence. */
   evidence: z.array(z.object({ id: z.string(), label: z.string(), detail: z.string() })),
 });
