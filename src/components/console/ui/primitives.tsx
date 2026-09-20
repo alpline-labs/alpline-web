@@ -94,7 +94,7 @@ export function GateChip({
    * feed is paired but has no successful scrape — same publish path as no
    * source, but a scraper to fix rather than a feed to find.
    */
-  notRunWhy?: "unmeasured" | "unsourced" | "insufficient" | "stale_source" | null;
+  notRunWhy?: "unmeasured" | "unsourced" | "insufficient" | "stale_source" | "draft_source" | null;
 }) {
   const t =
     status === "fail" && !blocking
@@ -103,13 +103,17 @@ export function GateChip({
         ? { chip: "bg-[var(--fill)] text-[var(--label-3)]", label: "No source" }
         : status === "not_run" && notRunWhy === "stale_source"
           ? { chip: "bg-[var(--c-warn-bg)] text-[var(--c-warn)]", label: "Stale source" }
-          : status === "not_run" && notRunWhy === "insufficient"
-            ? { chip: "bg-[var(--c-blocked-bg)] text-[var(--c-blocked)]", label: "Unjudged" }
-            : GATE_TONE[status];
+          : status === "not_run" && notRunWhy === "draft_source"
+            ? { chip: "bg-[var(--c-warn-bg)] text-[var(--c-warn)]", label: "Draft source" }
+            : status === "not_run" && notRunWhy === "insufficient"
+              ? { chip: "bg-[var(--c-blocked-bg)] text-[var(--c-blocked)]", label: "Unjudged" }
+              : GATE_TONE[status];
   const title =
     status === "not_run" && notRunWhy === "stale_source"
       ? "The operator feed is paired but has no successful scrape"
-      : undefined;
+      : status === "not_run" && notRunWhy === "draft_source"
+        ? "An operator-map inventory exists but is an unreviewed agent draft — review it to run this gate"
+        : undefined;
   return (
     <span
       className={cn("inline-flex h-[19px] items-center rounded-sm px-1.5 text-[11px] font-medium", t.chip)}
