@@ -15,6 +15,9 @@ const routes: { path: string; priority: number; changeFrequency: MetadataRoute.S
   { path: "", priority: 1, changeFrequency: "weekly" },
   { path: "/privacy", priority: 0.3, changeFrequency: "yearly" },
   { path: "/terms", priority: 0.3, changeFrequency: "yearly" },
+  // Linked from both store listings (Play Data safety, App Store 5.1.1(v)) —
+  // the path is referenced in those consoles, so it must not move.
+  { path: "/delete-account", priority: 0.3, changeFrequency: "yearly" },
   { path: "/map", priority: 0.6, changeFrequency: "monthly" },
 ];
 
